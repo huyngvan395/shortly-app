@@ -11,6 +11,8 @@ import 'package:shortly_app/features/chat/presentation/screen/chat_screen.dart';
 import 'package:shortly_app/features/chat/presentation/screen/message_screen.dart';
 
 import '../features/auth/presentation/sceen/auth_callback_screen.dart';
+import '../features/ecommerce/shop/presentation/screen/shop_profile_screen.dart';
+import '../features/ecommerce/shop/presentation/screen/seller_registration_screen.dart';
 
 class Routes {
   static const login = "/login";
@@ -25,6 +27,9 @@ class Routes {
 
   static const chat = "/chat";
   static const messages = "/messages";
+
+  static const shopProfile = "/shop/:id";
+  static const registerSeller = "/register-seller";
 }
 
 class AppRouter {
@@ -58,6 +63,17 @@ class AppRouter {
           final uid = state.pathParameters['id'] ?? '';
           return ProfileScreen(userId: uid);
         },
+      ),
+      GoRoute(
+        path: Routes.shopProfile,
+        builder: (_, state) {
+          final id = state.pathParameters['id'] ?? '';
+          return ShopProfileScreen(shopId: id);
+        },
+      ),
+      GoRoute(
+        path: Routes.registerSeller,
+        builder: (_, _) => const SellerRegistrationScreen(),
       ),
       GoRoute(
         path: Routes.searchFeed,
