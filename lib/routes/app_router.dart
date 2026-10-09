@@ -40,7 +40,25 @@ class AppRouter {
     observers: [routeObserver],
     initialLocation: Routes.feed,
     routes: [
-
+      GoRoute(
+        path: Routes.shopProfile,
+        builder: (_, state) =>
+            ShopProfileScreen(shopId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: Routes.registerSeller,
+        builder: (_, _) => const SellerRegistrationScreen(),
+      ),
+      GoRoute(
+        path: Routes.reviewForm,
+        builder: (_, state) {
+          final item = state.extra;
+          if (item == null) return const SizedBox.shrink();
+          return ReviewFormScreen(
+            orderItem: item as dynamic,
+          ); // Using dynamic to avoid importing OrderItem here, or I can import it.
+        },
+      ),
     ],
   );
 }
