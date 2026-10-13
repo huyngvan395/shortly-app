@@ -21,7 +21,7 @@ class CloudinaryService {
     // Tạo signature (dùng cho signed upload – an toàn hơn)
     final paramsToSign = {
       'timestamp': '$timestamp',
-      'folder': 'shareco/videos',
+      'folder': 'shortly_app/videos',
     };
 
     final signature = _sign(paramsToSign);
@@ -31,7 +31,7 @@ class CloudinaryService {
       ..fields['api_key'] = Env.cloudinaryApiKey
       ..fields['timestamp'] = '$timestamp'
       ..fields['signature'] = signature
-      ..fields['folder'] = 'shareco/videos'
+      ..fields['folder'] = 'shortly_app/videos'
       ..fields['resource_type'] = 'video'
       ..files.add(await http.MultipartFile.fromPath('file', file.path));
 
@@ -69,7 +69,7 @@ class CloudinaryService {
     final timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     final paramsToSign = {
       'timestamp': '$timestamp',
-      'folder': 'shareco/thumbnails',
+      'folder': 'shortly_app/thumbnails',
     };
 
     final signature = _sign(paramsToSign);
@@ -79,7 +79,7 @@ class CloudinaryService {
       ..fields['api_key'] = Env.cloudinaryApiKey
       ..fields['timestamp'] = '$timestamp'
       ..fields['signature'] = signature
-      ..fields['folder'] = 'shareco/thumbnails'
+      ..fields['folder'] = 'shortly_app/thumbnails'
       ..files.add(await http.MultipartFile.fromPath('file', filePath));
 
     final res = await request.send();
@@ -110,7 +110,7 @@ class CloudinaryService {
 
     final paramsToSign = {
       'timestamp': '$timestamp',
-      'folder': 'shareco/chat/images',
+      'folder': 'shortly_app/chat/images',
     };
     final signature = _sign(paramsToSign);
 
@@ -119,7 +119,7 @@ class CloudinaryService {
       ..fields['api_key'] = Env.cloudinaryApiKey
       ..fields['timestamp'] = '$timestamp'
       ..fields['signature'] = signature
-      ..fields['folder'] = 'shareco/chat/images'
+      ..fields['folder'] = 'shortly_app/chat/images'
       ..files.add(await http.MultipartFile.fromPath('file', file.path));
 
     final streamedResponse = await request.send();
@@ -159,7 +159,7 @@ class CloudinaryService {
     // ❌ KHÔNG thêm resource_type vào đây
     final paramsToSign = {
       'timestamp': '$timestamp',
-      'folder': 'shareco/chat/audio',
+      'folder': 'shortly_app/chat/audio',
     };
 
     final signature = _sign(paramsToSign);
@@ -170,7 +170,7 @@ class CloudinaryService {
       ..fields['api_key'] = Env.cloudinaryApiKey
       ..fields['timestamp'] = '$timestamp'
       ..fields['signature'] = signature
-      ..fields['folder'] = 'shareco/chat/audio'
+      ..fields['folder'] = 'shortly_app/chat/audio'
       ..files.add(await http.MultipartFile.fromPath('file', file.path));
 
     final streamedResponse = await request.send();

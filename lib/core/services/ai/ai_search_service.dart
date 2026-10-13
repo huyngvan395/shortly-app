@@ -56,7 +56,7 @@ Yêu cầu đối chiếu:
         catalogPromptText = '\nYêu cầu: Hãy phân tích hình ảnh và trả về 1-2 từ khóa tìm kiếm tiếng Việt ngắn gọn mô tả đúng nhất sản phẩm (ví dụ: "áo thun", "iphone", "samsung", "giày sneaker").\n';
       }
 
-      final prompt = 'Bạn là chuyên gia AI nhận diện hình ảnh cho sàn thương mại điện tử Shareco. Hãy phân tích hình ảnh sản phẩm được gửi kèm.$catalogPromptText\nLƯU Ý: Chỉ trả về duy nhất chuỗi văn bản thuần (tên sản phẩm khớp từ danh sách, hoặc từ khóa mô tả), KHÔNG thêm bất kỳ giải thích, dấu câu, dấu ngoặc kép hay chữ thừa nào khác.';
+      final prompt = 'Bạn là chuyên gia AI nhận diện hình ảnh cho sàn thương mại điện tử shortly_app. Hãy phân tích hình ảnh sản phẩm được gửi kèm.$catalogPromptText\nLƯU Ý: Chỉ trả về duy nhất chuỗi văn bản thuần (tên sản phẩm khớp từ danh sách, hoặc từ khóa mô tả), KHÔNG thêm bất kỳ giải thích, dấu câu, dấu ngoặc kép hay chữ thừa nào khác.';
 
       final url = Uri.parse('https://openrouter.ai/api/v1/chat/completions');
       final response = await http.post(
@@ -64,8 +64,8 @@ Yêu cầu đối chiếu:
         headers: {
           'Authorization': 'Bearer $apiKey',
           'Content-Type': 'application/json',
-          'HTTP-Referer': 'https://shareco.vn',
-          'X-Title': 'Shareco App',
+          'HTTP-Referer': 'https://shortly_app.vn',
+          'X-Title': 'shortly_app App',
         },
         body: jsonEncode({
           'model': 'google/gemini-2.5-flash',

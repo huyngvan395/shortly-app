@@ -31,7 +31,7 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return AppShell(
       child: MaterialApp.router(
-        title: 'Shareco',
+        title: 'shortly_app',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
         routerConfig: _router,

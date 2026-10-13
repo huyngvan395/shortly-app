@@ -3,7 +3,8 @@
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthException;
 import '../../../../core/errors/exception.dart';
 import '../../../../core/services/supabase/index.dart';
-import '../models/auth_session_model.dart';
+import '../model/auth_session_model.dart';
+
 
 abstract class AuthRemoteDataSource {
   Future<AuthSessionModel> login({

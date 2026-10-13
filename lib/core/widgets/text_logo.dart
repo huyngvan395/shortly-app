@@ -18,7 +18,7 @@ class TextLogo extends StatelessWidget {
         ]).createShader(bounds);
       },
       child: const Text(
-        "ShareCo",
+        "shortly_app",
         style: TextStyle(
           fontSize: 32,
           fontWeight: FontWeight.bold,
