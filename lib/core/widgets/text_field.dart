@@ -1,5 +1,5 @@
 // import "package:flutter/material.dart";
-// import "package:shareco/core/constants/app_colors.dart";
+// import "package:shortly_app/core/constants/app_colors.dart";
 //
 // enum TextFieldVariant {
 //   gradient,   // 2px gradient border (signature)
@@ -37,7 +37,7 @@
 // }
 //
 // // ─── Main Widget ─────────────────────────────────────────────
-// class SharecoTextField extends StatefulWidget {
+// class shortly_appTextField extends StatefulWidget {
 //   final String? label;
 //   final String? placeholder;
 //   final TextEditingController? controller;
@@ -52,7 +52,7 @@
 //   final ValueChanged<String>? onChanged;
 //   final List<Color>? gradientColors;
 //
-//   const SharecoTextField({
+//   const shortly_appTextField({
 //     super.key,
 //     this.label,
 //     this.placeholder,
@@ -70,10 +70,10 @@
 //   });
 //
 //   @override
-//   State<SharecoTextField> createState() => _SharecoTextFieldState();
+//   State<shortly_appTextField> createState() => _shortly_appTextFieldState();
 // }
 //
-// class _SharecoTextFieldState extends State<SharecoTextField> {
+// class _shortly_appTextFieldState extends State<shortly_appTextField> {
 //   final FocusNode _focus = FocusNode();
 //   bool _focused = false;
 //
@@ -346,15 +346,15 @@
 // }
 //
 // // ─── Demo ─────────────────────────────────────────────────────
-// void main() => runApp(const SharecoApp());
+// void main() => runApp(const shortly_appApp());
 //
-// class SharecoApp extends StatelessWidget {
-//   const SharecoApp({super.key});
+// class shortly_appApp extends StatelessWidget {
+//   const shortly_appApp({super.key});
 //   @override
 //   Widget build(BuildContext context) {
 //     return MaterialApp(
 //       debugShowCheckedModeBanner: false,
-//       title: 'Shareco TextFields',
+//       title: 'shortly_app TextFields',
 //       theme: ThemeData(
 //         fontFamily: 'SF Pro Display',
 //         scaffoldBackgroundColor: const Color(0xFFF4F4F8),
@@ -377,7 +377,7 @@
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
-//       appBar: AppBar(title: const Text('Shareco TextField System')),
+//       appBar: AppBar(title: const Text('shortly_app TextField System')),
 //       body: SingleChildScrollView(
 //         padding: const EdgeInsets.all(20),
 //         child: Column(
@@ -385,13 +385,13 @@
 //           children: [
 //             // ── Variant A: Gradient
 //             _label('Variant A — gradient border'),
-//             SharecoTextField(
+//             shortly_appTextField(
 //               variant: TextFieldVariant.gradient,
 //               placeholder: 'Họ và tên',
 //               prefixIcon: const GradientIcon(Icons.person_outline_rounded),
 //             ),
 //             const SizedBox(height: 12),
-//             SharecoTextField(
+//             shortly_appTextField(
 //               variant: TextFieldVariant.gradient,
 //               placeholder: 'Email của bạn',
 //               keyboardType: TextInputType.emailAddress,
@@ -401,7 +401,7 @@
 //
 //             // ── Variant B: Purple accent
 //             _label('Variant B — purple accent'),
-//             SharecoTextField(
+//             shortly_appTextField(
 //               variant: TextFieldVariant.accent,
 //               placeholder: 'Số điện thoại',
 //               keyboardType: TextInputType.phone,
@@ -409,7 +409,7 @@
 //                   color: primaryPurple, size: 22),
 //             ),
 //             const SizedBox(height: 12),
-//             SharecoTextField(
+//             shortly_appTextField(
 //               variant: TextFieldVariant.accent,
 //               placeholder: 'Mật khẩu',
 //               obscureText: !_showPass,
@@ -430,12 +430,12 @@
 //
 //             // ── Variant C: Floating label
 //             _label('Variant C — floating label'),
-//             SharecoTextField(
+//             shortly_appTextField(
 //               variant: TextFieldVariant.floating,
 //               label: 'Tên người dùng',
 //             ),
 //             const SizedBox(height: 12),
-//             SharecoTextField(
+//             shortly_appTextField(
 //               variant: TextFieldVariant.floating,
 //               label: 'Địa chỉ email',
 //               keyboardType: TextInputType.emailAddress,
@@ -446,7 +446,7 @@
 //
 //             // ── States
 //             _label('States'),
-//             SharecoTextField(
+//             shortly_appTextField(
 //               variant: TextFieldVariant.accent,
 //               placeholder: 'Email',
 //               fieldState: TextFieldState.error,
@@ -455,7 +455,7 @@
 //                   color: Color(0xFFFF4E4E), size: 22),
 //             ),
 //             const SizedBox(height: 12),
-//             SharecoTextField(
+//             shortly_appTextField(
 //               variant: TextFieldVariant.accent,
 //               placeholder: 'Họ và tên',
 //               fieldState: TextFieldState.success,
@@ -464,7 +464,7 @@
 //                   color: primaryPurple, size: 22),
 //             ),
 //             const SizedBox(height: 12),
-//             SharecoTextField(
+//             shortly_appTextField(
 //               variant: TextFieldVariant.accent,
 //               placeholder: 'Không thể chỉnh sửa',
 //               fieldState: TextFieldState.disabled,

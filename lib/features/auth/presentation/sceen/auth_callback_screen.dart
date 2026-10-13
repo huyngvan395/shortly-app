@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shareco/core/notifier/auth_notifier.dart';
-import 'package:shareco/di/injector.dart';
-import 'package:shareco/features/auth/domain/usecases/exchange_code_usecase.dart';
+import 'package:shortly_app/core/notifier/auth_notifier.dart';
+import 'package:shortly_app/di/injector.dart';
+import 'package:shortly_app/features/auth/domain/usecases/exchange_code_usecase.dart';
 
 import '../../../../core/services/supabase/index.dart';
 

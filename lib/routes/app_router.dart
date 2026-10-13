@@ -1,64 +1,38 @@
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shortly_app/features/profile/presentation/screen/profile_screen.dart';
 
-import '../core/navigation/app_route_observer.dart';
-
+import '../features/auth/presentation/sceen/auth_callback_screen.dart';
 
 class Routes {
-  static const login = "/login";
-  static const register = "/register";
-  static const feed = "/feed";
-  static const searchFeed = "/search-feed";
-  static const searchFeedViewer = "/search-feed-viewer";
-  static const profile = "/profile";
-  static const profileDetail = "/profile/:id";
+static const login = "/login";
+static const register = "/register";
+static const profile = "/profile";
+static const profileDetail = "/profile/:id";
 
-  static String profileOf(String id) => "$profile/$id";
-  static const video = "/video";
-  static const post = "/post";
-  static const chat = "/chat";
-  static const create = "/create";
-  static const discover = "/discover";
-  static const messages = "/messages";
-  static const ecommerce = "/ecommerce";
-  static const productDetail = "/products/:id";
-  static const cart = "/cart";
-  static const checkout = "/checkout";
-  static const orders = "/orders";
-  static const orderDetail = "/orders/:id";
-  static const addresses = "/addresses";
-  static const addressCreate = "/addresses/new";
-  static const addressEdit = "/addresses/:id/edit";
-  static const shopProfile = "/shop/:id";
-  static const reviewForm = "/review/new";
-  static const registerSeller = "/register-seller";
+static String profileOf(String id) => "$profile/$id";
 }
 
 class AppRouter {
-  static GoRouter router() => GoRouter(
-    observers: [routeObserver],
-    initialLocation: Routes.feed,
-    routes: [
-      GoRoute(
-        path: Routes.shopProfile,
-        builder: (_, state) =>
-            ShopProfileScreen(shopId: state.pathParameters['id']!),
-      ),
-      GoRoute(
-        path: Routes.registerSeller,
-        builder: (_, _) => const SellerRegistrationScreen(),
-      ),
-      GoRoute(
-        path: Routes.reviewForm,
-        builder: (_, state) {
-          final item = state.extra;
-          if (item == null) return const SizedBox.shrink();
-          return ReviewFormScreen(
-            orderItem: item as dynamic,
-          ); // Using dynamic to avoid importing OrderItem here, or I can import it.
-        },
-      ),
-    ],
-  );
+static GoRouter router() => GoRouter(
+initialLocation: Routes.login,
+routes: [
+GoRoute(
+path: '/login-callback',
+builder: (_, state) => AuthCallbackScreen(uri: state.uri),
+),
+GoRoute(
+path: Routes.profile,
+builder: (_, _) => const SizedBox.shrink(),
+),
+GoRoute(
+path: Routes.profileDetail,
+builder: (_, state) {
+final uid = state.pathParameters['id'] ?? '';
+return ProfileScreen(userId: uid);
+},
+),
+],
+);
 }

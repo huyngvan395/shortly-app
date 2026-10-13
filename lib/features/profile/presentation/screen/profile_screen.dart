@@ -1,15 +1,9 @@
-// features/profile/presentation/screen/profile_screen.dart
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shareco/core/notifier/video_posted_notifier.dart';
-import 'package:shareco/features/chat/domain/usecases/chat_usecases.dart';
-import 'package:shareco/features/chat/presentation/bloc/conversation_bloc.dart';
-import 'package:shareco/features/profile/presentation/bloc/profile_event.dart';
-import 'package:shareco/features/profile/presentation/bloc/profile_state.dart';
-import 'package:shareco/features/profile/presentation/screen/profile_feed_screen.dart';
+import 'package:shortly_app/features/profile/presentation/bloc/profile_event.dart';
+import 'package:shortly_app/features/profile/presentation/bloc/profile_state.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_sizes.dart';
@@ -17,8 +11,6 @@ import '../../../../core/helpers/require_auth.dart';
 import '../../../../core/services/supabase/index.dart';
 import '../../../../core/utils/storage_image.dart';
 import '../../../../di/injector.dart';
-import '../../../chat/presentation/screen/message_screen.dart';
-import '../../../video/domain/entities/video_entity.dart';
 import '../bloc/profile_bloc.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -29,9 +21,8 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) =>
-          ProfileBloc(profileRepo: sl(), getUserVideos: sl())
-            ..add(ProfileLoadRequested(userId)),
+      create: (_) => ProfileBloc(profileRepo: sl())
+        ..add(ProfileLoadRequested(userId)),
       child: _ProfileView(userId: userId),
     );
   }
@@ -46,29 +37,7 @@ class _ProfileView extends StatefulWidget {
   State<_ProfileView> createState() => _ProfileViewState();
 }
 
-class _ProfileViewState extends State<_ProfileView>
-    with SingleTickerProviderStateMixin {
-  late final TabController _tabCtrl;
-  bool _loadMoreQueued = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabCtrl = TabController(length: 3, vsync: this);
-    VideoPostedNotifier.instance.addListener(_onVideoPosted);
-  }
-
-  void _onVideoPosted() {
-    if (!mounted) return;
-    context.read<ProfileBloc>().add(const ProfileVideosRefreshRequested());
-  }
-
-  @override
-  void dispose() {
-    _tabCtrl.dispose();
-    super.dispose();
-  }
-
+class _ProfileViewState extends State<_ProfileView> {
   Future<void> _pickAndUploadAvatar() async {
     final picker = ImagePicker();
     final picked = await picker.pickImage(
@@ -77,57 +46,11 @@ class _ProfileViewState extends State<_ProfileView>
       maxWidth: 512,
       maxHeight: 512,
     );
+
     if (picked == null || !mounted) return;
 
     context.read<ProfileBloc>().add(
       ProfileAvatarUpdateRequested(picked.path),
-    );
-  }
-
-  Future<void> _openMessageScreen(
-    BuildContext context,
-    String otherUserId,
-  ) async {
-    // Tạo hoặc lấy conversation, rồi navigate
-    final convBloc = ConversationBloc(
-      getConversations: sl(),
-      getOrCreateConversation: sl(),
-      searchUsers: sl(),
-    );
-
-    final result = await sl<GetOrCreateConversationUseCase>()(otherUserId);
-    convBloc.close();
-
-    result.fold(
-      (failure) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(failure.message)));
-      },
-      (conversation) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => MessageScreen(conversation: conversation),
-          ),
-        );
-      },
-    );
-  }
-
-  void _openProfileFeed(BuildContext context, int initialIndex) {
-    Navigator.of(context).push(
-      PageRouteBuilder(
-        opaque: true,
-        barrierColor: Colors.black,
-        pageBuilder: (_, __, ___) => BlocProvider.value(
-          value: context.read<ProfileBloc>(),
-          child: ProfileFeedScreen(initialIndex: initialIndex),
-        ),
-        transitionsBuilder: (_, animation, __, child) =>
-            FadeTransition(opacity: animation, child: child),
-        transitionDuration: const Duration(milliseconds: 220),
-      ),
     );
   }
 
@@ -154,15 +77,16 @@ class _ProfileViewState extends State<_ProfileView>
             );
           }
 
-          if (state is! ProfileLoaded) return const SizedBox.shrink();
+          if (state is! ProfileLoaded) {
+            return const SizedBox.shrink();
+          }
 
           final profile = state.profile;
-          final isMe =
-              profile.isCurrentUser ||
+          final isMe = profile.isCurrentUser ||
               SupabaseService.currentUserId == profile.id;
 
-          return NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          return CustomScrollView(
+            slivers: [
               SliverAppBar(
                 pinned: true,
                 centerTitle: true,
@@ -194,15 +118,7 @@ class _ProfileViewState extends State<_ProfileView>
                   ],
                 ),
                 actions: [
-                  if (isMe) ...[
-                    IconButton(
-                      tooltip: 'Thêm nội dung',
-                      icon: const Icon(
-                        Icons.add_box_outlined,
-                        color: Colors.black87,
-                      ),
-                      onPressed: () {},
-                    ),
+                  if (isMe)
                     IconButton(
                       tooltip: 'Menu',
                       icon: const Icon(
@@ -210,8 +126,8 @@ class _ProfileViewState extends State<_ProfileView>
                         color: Colors.black87,
                       ),
                       onPressed: () => _showOwnerMenu(context),
-                    ),
-                  ] else
+                    )
+                  else
                     IconButton(
                       tooltip: 'Thêm',
                       icon: const Icon(
@@ -228,81 +144,18 @@ class _ProfileViewState extends State<_ProfileView>
                   isMe: isMe,
                   onEdit: () => _showEditProfile(ctx, state),
                   onFollow: () => ctx.requireAuth(
-                    () => ctx.read<ProfileBloc>().add(
+                        () => ctx.read<ProfileBloc>().add(
                       ProfileFollowToggled(profile.id),
                     ),
                   ),
                   onAvatarTap: _pickAndUploadAvatar,
-                  onMessage: () => _openMessageScreen(context, profile.id),
-                ),
-              ),
-              SliverPersistentHeader(
-                pinned: true,
-                delegate: _TabBarDelegate(
-                  TabBar(
-                    controller: _tabCtrl,
-                    indicatorColor: AppColors.primary,
-                    indicatorWeight: 2,
-                    labelColor: Colors.black87,
-                    unselectedLabelColor: Colors.black38,
-                    tabs: [
-                      const Tab(icon: Icon(Icons.grid_on_rounded)),
-                      Tab(
-                        icon: Icon(
-                          isMe
-                              ? Icons.lock_outline_rounded
-                              : Icons.playlist_play,
-                        ),
-                      ),
-                      const Tab(icon: Icon(Icons.favorite_border_rounded)),
-                    ],
-                  ),
                 ),
               ),
             ],
-            body: TabBarView(
-              controller: _tabCtrl,
-              children: [
-                _VideoGrid(
-                  videos: state.videos,
-                  isLoadingMore: state.isLoadingMoreVideos,
-                  onLoadMore: _queueLoadMore,
-                  onVideoTap: (int index) => _openProfileFeed(ctx, index),
-                ),
-                _EmptyProfileTab(
-                  icon: isMe
-                      ? Icons.lock_outline_rounded
-                      : Icons.video_library_outlined,
-                  title: isMe
-                      ? 'Chỉ bạn có thể nhìn thấy'
-                      : 'Không có danh sách phát công khai',
-                  subtitle: isMe
-                      ? 'Video riêng tư và bản nháp sẽ xuất hiện ở đây'
-                      : 'Người sáng tạo này chưa chia sẻ bất kỳ bộ sưu tập nào.',
-                ),
-                _EmptyProfileTab(
-                  icon: Icons.favorite_border_rounded,
-                  title: isMe ? 'Video đã thích' : 'Video đã thích là riêng tư',
-                  subtitle: isMe
-                      ? 'Các video bạn thích sẽ được tập hợp tại đây.'
-                      : 'Chỉ người dùng này mới có thể xem các video mà họ đã thích.',
-                ),
-              ],
-            ),
           );
         },
       ),
     );
-  }
-
-  void _queueLoadMore() {
-    if (_loadMoreQueued) return;
-    _loadMoreQueued = true;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      context.read<ProfileBloc>().add(const ProfileVideosLoadMoreRequested());
-      _loadMoreQueued = false;
-    });
   }
 
   void _showOwnerMenu(BuildContext context) {
@@ -317,7 +170,9 @@ class _ProfileViewState extends State<_ProfileView>
         final slide = Tween<Offset>(
           begin: const Offset(1, 0),
           end: Offset.zero,
-        ).animate(CurvedAnimation(parent: anim1, curve: Curves.easeOutCubic));
+        ).animate(
+          CurvedAnimation(parent: anim1, curve: Curves.easeOutCubic),
+        );
 
         return Stack(
           children: [
@@ -329,7 +184,9 @@ class _ProfileViewState extends State<_ProfileView>
               alignment: Alignment.centerRight,
               child: SlideTransition(
                 position: slide,
-                child: _OwnerSideMenu(onClose: () => Navigator.of(ctx).pop()),
+                child: _OwnerSideMenu(
+                  onClose: () => Navigator.of(ctx).pop(),
+                ),
               ),
             ),
           ],
@@ -389,7 +246,6 @@ class _ProfileHeader extends StatelessWidget {
   final VoidCallback onEdit;
   final VoidCallback onFollow;
   final VoidCallback onAvatarTap;
-  final VoidCallback? onMessage;
 
   const _ProfileHeader({
     required this.state,
@@ -397,7 +253,6 @@ class _ProfileHeader extends StatelessWidget {
     required this.onEdit,
     required this.onFollow,
     required this.onAvatarTap,
-    required this.onMessage,
   });
 
   @override
@@ -473,11 +328,6 @@ class _ProfileHeader extends StatelessWidget {
                   icon: Icons.share_outlined,
                   onPressed: () {},
                 ),
-                const SizedBox(width: AppSizes.sm),
-                _SquareProfileButton(
-                  icon: Icons.person_add_alt_1_outlined,
-                  onPressed: () {},
-                ),
               ],
             )
           else
@@ -488,14 +338,6 @@ class _ProfileHeader extends StatelessWidget {
                     label: profile.isFollowing ? 'Đang theo dõi' : 'Theo dõi',
                     isPrimary: !profile.isFollowing,
                     onPressed: onFollow,
-                  ),
-                ),
-                const SizedBox(width: AppSizes.sm),
-                Expanded(
-                  child: _ProfileActionButton(
-                    label: 'Nhắn tin',
-                    icon: Icons.chat_bubble_outline_rounded,
-                    onPressed: onMessage,
                   ),
                 ),
                 const SizedBox(width: AppSizes.sm),
@@ -517,7 +359,6 @@ class _ProfileAvatar extends StatelessWidget {
   final bool isUploading;
   final VoidCallback? onTap;
 
-
   const _ProfileAvatar({
     required this.avatarPath,
     required this.canAdd,
@@ -533,7 +374,7 @@ class _ProfileAvatar extends StatelessWidget {
         : null;
 
     return GestureDetector(
-      onTap: isUploading?  null: onTap,
+      onTap: isUploading ? null : onTap,
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -542,15 +383,25 @@ class _ProfileAvatar extends StatelessWidget {
             backgroundColor: const Color(0xFFE8E8E8),
             backgroundImage: imageProvider,
             child: imageProvider == null
-                ? const Icon(Icons.person, size: 48, color: Color(0xFFAAAAAA))
+                ? const Icon(
+              Icons.person,
+              size: 48,
+              color: Color(0xFFAAAAAA),
+            )
                 : null,
           ),
           if (isUploading)
-            Positioned.fill(
+            const Positioned.fill(
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   color: Colors.black45,
                   shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                    strokeWidth: 2,
+                  ),
                 ),
               ),
             ),
@@ -616,7 +467,11 @@ class _StatDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(height: 24, width: 1, color: const Color(0xFFDDDDDD));
+    return Container(
+      height: 24,
+      width: 1,
+      color: const Color(0xFFDDDDDD),
+    );
   }
 }
 
@@ -635,8 +490,10 @@ class _ProfileActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final background = isPrimary ? AppColors.primary : const Color(0xFFF0F0F0);
-    final border = isPrimary ? AppColors.primary : const Color(0xFFDDDDDD);
+    final background =
+    isPrimary ? AppColors.primary : const Color(0xFFF0F0F0);
+    final border =
+    isPrimary ? AppColors.primary : const Color(0xFFDDDDDD);
     final foreground = isPrimary ? Colors.white : Colors.black87;
 
     return SizedBox(
@@ -684,7 +541,10 @@ class _SquareProfileButton extends StatelessWidget {
   final IconData icon;
   final VoidCallback onPressed;
 
-  const _SquareProfileButton({required this.icon, required this.onPressed});
+  const _SquareProfileButton({
+    required this.icon,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -703,177 +563,6 @@ class _SquareProfileButton extends StatelessWidget {
           padding: EdgeInsets.zero,
         ),
         child: Icon(icon, size: 20),
-      ),
-    );
-  }
-}
-
-class _VideoGrid extends StatelessWidget {
-  final List<VideoEntity> videos;
-  final bool isLoadingMore;
-  final VoidCallback onLoadMore;
-  final void Function(int index) onVideoTap;
-
-  const _VideoGrid({
-    required this.videos,
-    required this.isLoadingMore,
-    required this.onLoadMore,
-    required this.onVideoTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    if (videos.isEmpty) {
-      return const _EmptyProfileTab(
-        icon: Icons.video_camera_back_outlined,
-        title: 'No videos yet',
-        subtitle: 'Uploaded videos will appear here.',
-      );
-    }
-
-    return GridView.builder(
-      padding: EdgeInsets.zero,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        childAspectRatio: 9 / 16,
-        mainAxisSpacing: 1,
-        crossAxisSpacing: 1,
-      ),
-      itemCount: videos.length + (isLoadingMore ? 1 : 0),
-      itemBuilder: (_, index) {
-        if (index >= videos.length) {
-          return const Center(
-            child: SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(
-                color: AppColors.primary,
-                strokeWidth: 2,
-              ),
-            ),
-          );
-        }
-
-        if (index >= videos.length - 3) onLoadMore();
-
-        final video = videos[index];
-        final thumbnailUrl = video.thumbnailPath != null
-            ? StorageImage.thumbnailUrl(video.thumbnailPath!)
-            : null;
-
-        return InkWell(
-          onTap: () => onVideoTap(index),
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              if (thumbnailUrl != null)
-                CachedNetworkImage(
-                  imageUrl: thumbnailUrl,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) =>
-                      Container(color: const Color(0xFFE8E8E8)),
-                  errorWidget: (context, url, error) =>
-                      const _VideoPlaceholder(),
-                )
-              else
-                const _VideoPlaceholder(),
-              Positioned(
-                left: 5,
-                bottom: 5,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Colors.black.withAlpha(80),
-                    borderRadius: BorderRadius.circular(AppSizes.radiusSm),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 5,
-                      vertical: 2,
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          Icons.play_arrow_rounded,
-                          color: Colors.white,
-                          size: 14,
-                        ),
-                        const SizedBox(width: 2),
-                        Text(
-                          StorageImage.formatCount(video.viewCount),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _VideoPlaceholder extends StatelessWidget {
-  const _VideoPlaceholder();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: const Color(0xFFE8E8E8),
-      child: const Icon(Icons.video_file_outlined, color: Color(0xFFBBBBBB)),
-    );
-  }
-}
-
-class _EmptyProfileTab extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-
-  const _EmptyProfileTab({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(AppSizes.xxl),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, color: Colors.black26, size: 48),
-            const SizedBox(height: AppSizes.md),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.black87,
-                fontSize: AppSizes.fontXl,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-            const SizedBox(height: AppSizes.xs),
-            Text(
-              subtitle,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Color(0xFF777777),
-                fontSize: AppSizes.fontMd,
-                height: 1.3,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -963,7 +652,10 @@ class _ProfileError extends StatelessWidget {
   final String message;
   final VoidCallback onRetry;
 
-  const _ProfileError({required this.message, required this.onRetry});
+  const _ProfileError({
+    required this.message,
+    required this.onRetry,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -986,7 +678,7 @@ class _ProfileError extends StatelessWidget {
             ),
             const SizedBox(height: AppSizes.lg),
             _ProfileActionButton(
-              label: 'Try again',
+              label: 'Thử lại',
               isPrimary: true,
               onPressed: onRetry,
             ),
@@ -994,38 +686,6 @@ class _ProfileError extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class _TabBarDelegate extends SliverPersistentHeaderDelegate {
-  final TabBar tabBar;
-
-  const _TabBarDelegate(this.tabBar);
-
-  @override
-  double get minExtent => tabBar.preferredSize.height;
-
-  @override
-  double get maxExtent => tabBar.preferredSize.height;
-
-  @override
-  Widget build(
-    BuildContext context,
-    double shrinkOffset,
-    bool overlapsContent,
-  ) {
-    return DecoratedBox(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        border: Border(bottom: BorderSide(color: Color(0xFFE0E0E0))),
-      ),
-      child: tabBar,
-    );
-  }
-
-  @override
-  bool shouldRebuild(covariant _TabBarDelegate oldDelegate) {
-    return oldDelegate.tabBar != tabBar;
   }
 }
 
@@ -1039,7 +699,9 @@ class _OwnerSideMenu extends StatelessWidget {
     return SafeArea(
       child: Material(
         color: Colors.white,
-        borderRadius: const BorderRadius.horizontal(left: Radius.circular(20)),
+        borderRadius: const BorderRadius.horizontal(
+          left: Radius.circular(20),
+        ),
         child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.82,
           height: double.infinity,
@@ -1128,11 +790,9 @@ class _EditProfileSheetState extends State<_EditProfileSheet> {
   @override
   void initState() {
     super.initState();
-
     nameCtrl = TextEditingController(
       text: widget.state.profile.displayName,
     );
-
     bioCtrl = TextEditingController(
       text: widget.state.profile.bio,
     );
@@ -1152,8 +812,7 @@ class _EditProfileSheetState extends State<_EditProfileSheet> {
         left: AppSizes.xl,
         right: AppSizes.xl,
         top: AppSizes.lg,
-        bottom:
-        MediaQuery.of(context).viewInsets.bottom + AppSizes.xl,
+        bottom: MediaQuery.of(context).viewInsets.bottom + AppSizes.xl,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -1170,23 +829,18 @@ class _EditProfileSheetState extends State<_EditProfileSheet> {
             ),
           ),
           const SizedBox(height: AppSizes.xl),
-
           _ProfileTextField(
             controller: nameCtrl,
             label: 'Tên hiển thị',
             maxLines: 1,
           ),
-
           const SizedBox(height: AppSizes.md),
-
           _ProfileTextField(
             controller: bioCtrl,
             label: 'Bio',
             maxLines: 3,
           ),
-
           const SizedBox(height: AppSizes.xl),
-
           _ProfileActionButton(
             label: 'Lưu',
             isPrimary: true,
@@ -1197,7 +851,6 @@ class _EditProfileSheetState extends State<_EditProfileSheet> {
                   bio: bioCtrl.text.trim(),
                 ),
               );
-
               Navigator.pop(context);
             },
           ),

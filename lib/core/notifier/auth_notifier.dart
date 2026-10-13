@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:shareco/core/services/supabase/index.dart';
+import 'package:shortly_app/core/services/supabase/index.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthNotifier extends ChangeNotifier {

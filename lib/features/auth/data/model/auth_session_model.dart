@@ -1,4 +1,4 @@
-import 'package:shareco/features/auth/domain/entities/auth_session.dart';
+import 'package:shortly_app/features/auth/domain/entities/auth_session.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthSessionModel {
