@@ -1,6 +1,11 @@
 // di/injector.dart
 
 import 'package:get_it/get_it.dart';
+import 'package:shortly_app/features/feed/presentation/bloc/feed_bloc.dart';
+import 'package:shortly_app/features/video/data/datasources/video_remote_datasource.dart';
+import 'package:shortly_app/features/video/data/repositories/video_repository_impl.dart';
+import 'package:shortly_app/features/video/domain/repositories/video_repository.dart';
+import 'package:shortly_app/features/video/domain/usecases/video_usecases.dart';
 
 
 
@@ -44,5 +49,29 @@ Future<void> setupInjector() async {
 
   sl.registerLazySingleton<ProfileRepository>(
         () => ProfileRepositoryImpl(remote: sl()),
+  );
+
+  sl.registerLazySingleton<VideoRemoteDataSource>(
+        () => VideoRemoteDataSourceImpl(sl()),
+  );
+  sl.registerLazySingleton<VideoRepository>(
+        () => VideoRepositoryImpl(remote: sl()),
+  );
+  sl.registerLazySingleton(() => GetForYouFeedUseCase(sl()));
+  sl.registerLazySingleton(() => GetFollowingFeedUseCase(sl()));
+  sl.registerLazySingleton(() => GetUserVideosUseCase(sl()));
+  sl.registerLazySingleton(() => GetVideoByIdUseCase(sl()));
+  sl.registerLazySingleton(() => ToggleVideoLikeUseCase(sl()));
+  sl.registerLazySingleton(() => IncrementVideoViewUseCase(sl()));
+  sl.registerLazySingleton(() => CreateVideoUseCase(sl()));
+  sl.registerLazySingleton(() => DeleteVideoUseCase(sl()));
+
+  sl.registerFactory(
+        () => FeedBloc(
+      getForYouFeed: sl(),
+      getFollowingFeed: sl(),
+      toggleVideoLike: sl(),
+      incrementView: sl(),
+    ),
   );
 }
