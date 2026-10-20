@@ -1,6 +1,9 @@
 // di/injector.dart
 
 import 'package:get_it/get_it.dart';
+import 'package:shortly_app/core/services/media/audio_recorder_service.dart';
+import 'package:shortly_app/core/services/media/image_picker_service.dart';
+import 'package:shortly_app/core/services/supabase/presence_service.dart';
 import 'package:shortly_app/features/feed/presentation/bloc/feed_bloc.dart';
 import 'package:shortly_app/features/video/data/datasources/video_remote_datasource.dart';
 import 'package:shortly_app/features/video/data/repositories/video_repository_impl.dart';
@@ -30,6 +33,9 @@ Future<void> setupInjector() async {
   sl.registerLazySingleton(() => ThemeProvider());
   sl.registerLazySingleton(() => AuthNotifier());
   sl.registerLazySingleton(() => CloudinaryService());
+  sl.registerLazySingleton(() => PresenceService());
+  sl.registerLazySingleton(() => AudioRecorderService());
+  sl.registerLazySingleton(() => ImagePickerService());
 
   sl.registerLazySingleton<AuthRemoteDataSource>(
         () => AuthRemoteDataSourceImpl(),
