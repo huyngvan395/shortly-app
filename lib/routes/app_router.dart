@@ -6,6 +6,9 @@ import 'package:shortly_app/features/feed/presentation/bloc/search_bloc.dart';
 import 'package:shortly_app/features/feed/presentation/screen/search_screen.dart';
 import 'package:shortly_app/features/profile/presentation/screen/profile_screen.dart';
 import 'package:shortly_app/features/video/domain/repositories/video_repository.dart';
+import 'package:shortly_app/features/chat/domain/entities/chat_entities.dart';
+import 'package:shortly_app/features/chat/presentation/screen/chat_screen.dart';
+import 'package:shortly_app/features/chat/presentation/screen/message_screen.dart';
 
 import '../features/auth/presentation/sceen/auth_callback_screen.dart';
 
@@ -19,6 +22,9 @@ class Routes {
   static const profileDetail = "/profile/:id";
 
   static String profileOf(String id) => "$profile/$id";
+
+  static const chat = "/chat";
+  static const messages = "/messages";
 }
 
 class AppRouter {
@@ -29,7 +35,23 @@ class AppRouter {
         path: '/login-callback',
         builder: (_, state) => AuthCallbackScreen(uri: state.uri),
       ),
-      GoRoute(path: Routes.profile, builder: (_, _) => const SizedBox.shrink()),
+      GoRoute(
+        path: Routes.chat,
+        builder: (_, _) => const ChatScreen(),
+      ),
+      GoRoute(
+        path: Routes.messages,
+        builder: (_, state) {
+          final conversation = state.extra;
+          return MessageScreen(
+            conversation: conversation as ConversationEntity,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.profile,
+        builder: (_, _) => const SizedBox.shrink(),
+      ),
       GoRoute(
         path: Routes.profileDetail,
         builder: (_, state) {
