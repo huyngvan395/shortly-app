@@ -30,6 +30,13 @@ import '../features/ecommerce/shop/domain/usecases/get_shop_detail_usecase.dart'
 import '../features/ecommerce/shop/domain/usecases/get_shop_products_usecase.dart';
 import '../features/ecommerce/shop/presentation/bloc/shop_profile_bloc.dart';
 
+import '../features/ecommerce/order/data/datasources/order_remote_datasource.dart';
+import '../features/ecommerce/order/data/repositories/order_repository_impl.dart';
+import '../features/ecommerce/order/domain/repositories/order_repository.dart';
+import '../features/ecommerce/order/domain/usecases/cancel_order_usecase.dart';
+import '../features/ecommerce/order/domain/usecases/get_order_detail_usecase.dart';
+import '../features/ecommerce/order/presentation/bloc/order_detail/order_detail_bloc.dart';
+
 import '../features/profile/data/datasources/profile_remote_datasource.dart';
 import '../features/profile/data/repositories/profile_repository_impl.dart';
 import '../features/profile/domain/repositories/profile_repository.dart';
@@ -104,6 +111,25 @@ Future<void> setupInjector() async {
         () => ShopProfileBloc(
       getShopDetailUseCase: sl(),
       getShopProductsUseCase: sl(),
+    ),
+  );
+
+  // Order detail
+  sl.registerLazySingleton<OrderRemoteDataSource>(
+        () => OrderRemoteDataSourceImpl(),
+  );
+
+  sl.registerLazySingleton<OrderRepository>(
+        () => OrderRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetOrderDetailUseCase(sl()));
+  sl.registerLazySingleton(() => CancelOrderUseCase(sl()));
+
+  sl.registerFactory(
+        () => OrderDetailBloc(
+      getOrderDetailUseCase: sl(),
+      cancelOrderUseCase: sl(),
     ),
   );
 }
