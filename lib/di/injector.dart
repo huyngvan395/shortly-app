@@ -23,6 +23,13 @@ import '../features/auth/domain/repositories/auth_repository.dart';
 import '../features/auth/domain/usecases/login_usecase.dart';
 import '../features/auth/domain/usecases/register_usecase.dart';
 
+import '../features/ecommerce/shop/data/datasources/shop_remote_datasource.dart';
+import '../features/ecommerce/shop/data/repositories/shop_repository_impl.dart';
+import '../features/ecommerce/shop/domain/repositories/shop_repository.dart';
+import '../features/ecommerce/shop/domain/usecases/get_shop_detail_usecase.dart';
+import '../features/ecommerce/shop/domain/usecases/get_shop_products_usecase.dart';
+import '../features/ecommerce/shop/presentation/bloc/shop_profile_bloc.dart';
+
 import '../features/profile/data/datasources/profile_remote_datasource.dart';
 import '../features/profile/data/repositories/profile_repository_impl.dart';
 import '../features/profile/domain/repositories/profile_repository.dart';
@@ -78,6 +85,25 @@ Future<void> setupInjector() async {
       getFollowingFeed: sl(),
       toggleVideoLike: sl(),
       incrementView: sl(),
+    ),
+  );
+
+  // Shop
+  sl.registerLazySingleton<ShopRemoteDataSource>(
+        () => ShopRemoteDataSourceImpl(),
+  );
+
+  sl.registerLazySingleton<ShopRepository>(
+        () => ShopRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetShopDetailUseCase(sl()));
+  sl.registerLazySingleton(() => GetShopProductsUseCase(sl()));
+
+  sl.registerFactory(
+        () => ShopProfileBloc(
+      getShopDetailUseCase: sl(),
+      getShopProductsUseCase: sl(),
     ),
   );
 }
