@@ -30,6 +30,12 @@ import '../features/ecommerce/shop/domain/usecases/get_shop_detail_usecase.dart'
 import '../features/ecommerce/shop/domain/usecases/get_shop_products_usecase.dart';
 import '../features/ecommerce/shop/presentation/bloc/shop_profile_bloc.dart';
 
+import '../features/ecommerce/review/data/datasources/review_remote_datasource.dart';
+import '../features/ecommerce/review/data/repositories/review_repository_impl.dart';
+import '../features/ecommerce/review/domain/repositories/review_repository.dart';
+import '../features/ecommerce/review/domain/usecases/get_product_reviews_usecase.dart';
+import '../features/ecommerce/review/domain/usecases/submit_review_usecase.dart';
+import '../features/ecommerce/review/presentation/bloc/review_bloc.dart';
 import '../features/ecommerce/order/data/datasources/order_remote_datasource.dart';
 import '../features/ecommerce/order/data/repositories/order_repository_impl.dart';
 import '../features/ecommerce/order/domain/repositories/order_repository.dart';
@@ -114,6 +120,20 @@ Future<void> setupInjector() async {
     ),
   );
 
+  // Review
+  sl.registerLazySingleton<ReviewRemoteDataSource>(
+        () => ReviewRemoteDataSourceImpl(),
+  );
+
+  sl.registerLazySingleton<ReviewRepository>(
+        () => ReviewRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetProductReviewsUseCase(repository: sl()));
+  sl.registerLazySingleton(() => SubmitReviewUseCase(sl()));
+
+  sl.registerFactory(
+        () => ReviewBloc(submitReviewUseCase: sl());
   // Order detail
   sl.registerLazySingleton<OrderRemoteDataSource>(
         () => OrderRemoteDataSourceImpl(),
