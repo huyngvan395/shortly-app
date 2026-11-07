@@ -13,6 +13,7 @@ import 'package:shortly_app/features/chat/presentation/screen/message_screen.dar
 import '../features/auth/presentation/sceen/auth_callback_screen.dart';
 import '../features/ecommerce/shop/presentation/screen/shop_profile_screen.dart';
 import '../features/ecommerce/shop/presentation/screen/seller_registration_screen.dart';
+import '../features/ecommerce/review/presentation/screen/review_form_screen.dart';
 
 class Routes {
   static const login = "/login";
@@ -30,6 +31,7 @@ class Routes {
 
   static const shopProfile = "/shop/:id";
   static const registerSeller = "/register-seller";
+  static const reviewForm = "/review/new";
 }
 
 class AppRouter {
@@ -74,6 +76,14 @@ class AppRouter {
       GoRoute(
         path: Routes.registerSeller,
         builder: (_, _) => const SellerRegistrationScreen(),
+      ),
+      GoRoute(
+        path: Routes.reviewForm,
+        builder: (_, state) {
+          final item = state.extra;
+          if (item == null) return const SizedBox.shrink();
+          return ReviewFormScreen(orderItem: item as dynamic);
+        },
       ),
       GoRoute(
         path: Routes.searchFeed,
