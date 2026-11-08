@@ -10,8 +10,6 @@ import 'package:shortly_app/features/video/data/repositories/video_repository_im
 import 'package:shortly_app/features/video/domain/repositories/video_repository.dart';
 import 'package:shortly_app/features/video/domain/usecases/video_usecases.dart';
 
-
-
 import '../core/notifier/auth_notifier.dart';
 import '../core/services/cloudinary/cloudinary_service.dart';
 import '../core/theme/theme_provider.dart';
@@ -58,11 +56,11 @@ Future<void> setupInjector() async {
   sl.registerLazySingleton(() => ImagePickerService());
 
   sl.registerLazySingleton<AuthRemoteDataSource>(
-        () => AuthRemoteDataSourceImpl(),
+    () => AuthRemoteDataSourceImpl(),
   );
 
   sl.registerLazySingleton<AuthRepository>(
-        () => AuthRepositoryImpl(remoteDataSource: sl()),
+    () => AuthRepositoryImpl(remoteDataSource: sl()),
   );
 
   sl.registerLazySingleton(() => LoginUseCase(sl()));
@@ -70,18 +68,18 @@ Future<void> setupInjector() async {
 
   // Profile
   sl.registerLazySingleton<ProfileRemoteDataSource>(
-        () => ProfileRemoteDataSourceImpl(),
+    () => ProfileRemoteDataSourceImpl(),
   );
 
   sl.registerLazySingleton<ProfileRepository>(
-        () => ProfileRepositoryImpl(remote: sl()),
+    () => ProfileRepositoryImpl(remote: sl()),
   );
 
   sl.registerLazySingleton<VideoRemoteDataSource>(
-        () => VideoRemoteDataSourceImpl(sl()),
+    () => VideoRemoteDataSourceImpl(sl()),
   );
   sl.registerLazySingleton<VideoRepository>(
-        () => VideoRepositoryImpl(remote: sl()),
+    () => VideoRepositoryImpl(remote: sl()),
   );
   sl.registerLazySingleton(() => GetForYouFeedUseCase(sl()));
   sl.registerLazySingleton(() => GetFollowingFeedUseCase(sl()));
@@ -93,7 +91,7 @@ Future<void> setupInjector() async {
   sl.registerLazySingleton(() => DeleteVideoUseCase(sl()));
 
   sl.registerFactory(
-        () => FeedBloc(
+    () => FeedBloc(
       getForYouFeed: sl(),
       getFollowingFeed: sl(),
       toggleVideoLike: sl(),
@@ -103,18 +101,18 @@ Future<void> setupInjector() async {
 
   // Shop
   sl.registerLazySingleton<ShopRemoteDataSource>(
-        () => ShopRemoteDataSourceImpl(),
+    () => ShopRemoteDataSourceImpl(),
   );
 
   sl.registerLazySingleton<ShopRepository>(
-        () => ShopRepositoryImpl(remoteDataSource: sl()),
+    () => ShopRepositoryImpl(remoteDataSource: sl()),
   );
 
   sl.registerLazySingleton(() => GetShopDetailUseCase(sl()));
   sl.registerLazySingleton(() => GetShopProductsUseCase(sl()));
 
   sl.registerFactory(
-        () => ShopProfileBloc(
+    () => ShopProfileBloc(
       getShopDetailUseCase: sl(),
       getShopProductsUseCase: sl(),
     ),
@@ -122,34 +120,31 @@ Future<void> setupInjector() async {
 
   // Review
   sl.registerLazySingleton<ReviewRemoteDataSource>(
-        () => ReviewRemoteDataSourceImpl(),
+    () => ReviewRemoteDataSourceImpl(),
   );
 
   sl.registerLazySingleton<ReviewRepository>(
-        () => ReviewRepositoryImpl(remoteDataSource: sl()),
+    () => ReviewRepositoryImpl(remoteDataSource: sl()),
   );
 
   sl.registerLazySingleton(() => GetProductReviewsUseCase(repository: sl()));
   sl.registerLazySingleton(() => SubmitReviewUseCase(sl()));
 
-  sl.registerFactory(
-        () => ReviewBloc(submitReviewUseCase: sl());
+  sl.registerFactory(() => ReviewBloc(submitReviewUseCase: sl()));
   // Order detail
   sl.registerLazySingleton<OrderRemoteDataSource>(
-        () => OrderRemoteDataSourceImpl(),
+    () => OrderRemoteDataSourceImpl(),
   );
 
   sl.registerLazySingleton<OrderRepository>(
-        () => OrderRepositoryImpl(remoteDataSource: sl()),
+    () => OrderRepositoryImpl(remoteDataSource: sl()),
   );
 
   sl.registerLazySingleton(() => GetOrderDetailUseCase(sl()));
   sl.registerLazySingleton(() => CancelOrderUseCase(sl()));
 
   sl.registerFactory(
-        () => OrderDetailBloc(
-      getOrderDetailUseCase: sl(),
-      cancelOrderUseCase: sl(),
-    ),
+    () =>
+        OrderDetailBloc(getOrderDetailUseCase: sl(), cancelOrderUseCase: sl()),
   );
 }
