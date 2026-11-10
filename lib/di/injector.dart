@@ -10,8 +10,6 @@ import 'package:shortly_app/features/video/data/repositories/video_repository_im
 import 'package:shortly_app/features/video/domain/repositories/video_repository.dart';
 import 'package:shortly_app/features/video/domain/usecases/video_usecases.dart';
 
-
-
 import '../core/notifier/auth_notifier.dart';
 import '../core/services/cloudinary/cloudinary_service.dart';
 import '../core/theme/theme_provider.dart';
@@ -30,21 +28,19 @@ import '../features/ecommerce/shop/domain/usecases/get_shop_detail_usecase.dart'
 import '../features/ecommerce/shop/domain/usecases/get_shop_products_usecase.dart';
 import '../features/ecommerce/shop/presentation/bloc/shop_profile_bloc.dart';
 
-<<<<<<< HEAD
 import '../features/ecommerce/review/data/datasources/review_remote_datasource.dart';
 import '../features/ecommerce/review/data/repositories/review_repository_impl.dart';
 import '../features/ecommerce/review/domain/repositories/review_repository.dart';
 import '../features/ecommerce/review/domain/usecases/get_product_reviews_usecase.dart';
 import '../features/ecommerce/review/domain/usecases/submit_review_usecase.dart';
 import '../features/ecommerce/review/presentation/bloc/review_bloc.dart';
-=======
+
 import '../features/ecommerce/order/data/datasources/order_remote_datasource.dart';
 import '../features/ecommerce/order/data/repositories/order_repository_impl.dart';
 import '../features/ecommerce/order/domain/repositories/order_repository.dart';
 import '../features/ecommerce/order/domain/usecases/cancel_order_usecase.dart';
 import '../features/ecommerce/order/domain/usecases/get_order_detail_usecase.dart';
-import '../features/ecommerce/order/presentation/bloc/order_detail/order_detail_bloc.dart';
->>>>>>> refs/rewritten/master
+import '../features/ecommerce/order/presentation/bloc/order_detail/order_detail_bloc.dart;
 
 import '../features/profile/data/datasources/profile_remote_datasource.dart';
 import '../features/profile/data/repositories/profile_repository_impl.dart';
@@ -61,11 +57,11 @@ Future<void> setupInjector() async {
   sl.registerLazySingleton(() => ImagePickerService());
 
   sl.registerLazySingleton<AuthRemoteDataSource>(
-        () => AuthRemoteDataSourceImpl(),
+    () => AuthRemoteDataSourceImpl(),
   );
 
   sl.registerLazySingleton<AuthRepository>(
-        () => AuthRepositoryImpl(remoteDataSource: sl()),
+    () => AuthRepositoryImpl(remoteDataSource: sl()),
   );
 
   sl.registerLazySingleton(() => LoginUseCase(sl()));
@@ -73,18 +69,18 @@ Future<void> setupInjector() async {
 
   // Profile
   sl.registerLazySingleton<ProfileRemoteDataSource>(
-        () => ProfileRemoteDataSourceImpl(),
+    () => ProfileRemoteDataSourceImpl(),
   );
 
   sl.registerLazySingleton<ProfileRepository>(
-        () => ProfileRepositoryImpl(remote: sl()),
+    () => ProfileRepositoryImpl(remote: sl()),
   );
 
   sl.registerLazySingleton<VideoRemoteDataSource>(
-        () => VideoRemoteDataSourceImpl(sl()),
+    () => VideoRemoteDataSourceImpl(sl()),
   );
   sl.registerLazySingleton<VideoRepository>(
-        () => VideoRepositoryImpl(remote: sl()),
+    () => VideoRepositoryImpl(remote: sl()),
   );
   sl.registerLazySingleton(() => GetForYouFeedUseCase(sl()));
   sl.registerLazySingleton(() => GetFollowingFeedUseCase(sl()));
@@ -96,7 +92,7 @@ Future<void> setupInjector() async {
   sl.registerLazySingleton(() => DeleteVideoUseCase(sl()));
 
   sl.registerFactory(
-        () => FeedBloc(
+    () => FeedBloc(
       getForYouFeed: sl(),
       getFollowingFeed: sl(),
       toggleVideoLike: sl(),
@@ -106,56 +102,47 @@ Future<void> setupInjector() async {
 
   // Shop
   sl.registerLazySingleton<ShopRemoteDataSource>(
-        () => ShopRemoteDataSourceImpl(),
+    () => ShopRemoteDataSourceImpl(),
   );
 
   sl.registerLazySingleton<ShopRepository>(
-        () => ShopRepositoryImpl(remoteDataSource: sl()),
+    () => ShopRepositoryImpl(remoteDataSource: sl()),
   );
 
   sl.registerLazySingleton(() => GetShopDetailUseCase(sl()));
   sl.registerLazySingleton(() => GetShopProductsUseCase(sl()));
 
   sl.registerFactory(
-        () => ShopProfileBloc(
+    () => ShopProfileBloc(
       getShopDetailUseCase: sl(),
       getShopProductsUseCase: sl(),
     ),
   );
 
-<<<<<<< HEAD
   // Review
   sl.registerLazySingleton<ReviewRemoteDataSource>(
-        () => ReviewRemoteDataSourceImpl(),
+    () => ReviewRemoteDataSourceImpl(),
   );
-
   sl.registerLazySingleton<ReviewRepository>(
-        () => ReviewRepositoryImpl(remoteDataSource: sl()),
+    () => ReviewRepositoryImpl(remoteDataSource: sl()),
   );
-
   sl.registerLazySingleton(() => GetProductReviewsUseCase(repository: sl()));
   sl.registerLazySingleton(() => SubmitReviewUseCase(sl()));
+  sl.registerFactory(() => ReviewBloc(submitReviewUseCase: sl()));
 
-  sl.registerFactory(
-        () => ReviewBloc(submitReviewUseCase: sl()),
-=======
   // Order detail
   sl.registerLazySingleton<OrderRemoteDataSource>(
-        () => OrderRemoteDataSourceImpl(),
+    () => OrderRemoteDataSourceImpl(),
   );
-
   sl.registerLazySingleton<OrderRepository>(
-        () => OrderRepositoryImpl(remoteDataSource: sl()),
+    () => OrderRepositoryImpl(remoteDataSource: sl()),
   );
-
   sl.registerLazySingleton(() => GetOrderDetailUseCase(sl()));
   sl.registerLazySingleton(() => CancelOrderUseCase(sl()));
-
   sl.registerFactory(
-        () => OrderDetailBloc(
+    () => OrderDetailBloc(
       getOrderDetailUseCase: sl(),
       cancelOrderUseCase: sl(),
     ),
->>>>>>> refs/rewritten/master
   );
 }
