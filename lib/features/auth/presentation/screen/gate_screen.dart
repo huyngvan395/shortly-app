@@ -1,3 +1,7 @@
+// features/auth/presentation/screen/gate_screen.dart
+//
+// GateScreen chỉ dùng trong AuthBottomSheet (mode sheet).
+// KHÔNG có standalone mode — auth flow không đi qua GoRouter.
 
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
@@ -121,7 +125,7 @@ class _BenefitRow extends StatelessWidget {
           width: 40,
           height: 40,
           decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(0.15),
+            color: AppColors.primary.withValues(alpha: 0.15),
             shape: BoxShape.circle,
           ),
           child: Icon(icon, color: AppColors.primary, size: 20),

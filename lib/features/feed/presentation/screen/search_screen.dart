@@ -6,13 +6,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shortly_app/features/feed/presentation/bloc/search_bloc.dart';
+import 'package:shortly_app/features/feed/presentation/bloc/search_event.dart';
 import 'package:shortly_app/features/feed/presentation/bloc/search_state.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/storage_image.dart';
 import '../../../../routes/app_router.dart';
 import '../../../video/domain/entities/video_entity.dart';
-import '../bloc/search_event.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -144,6 +144,7 @@ class _SearchScreenState extends State<SearchScreen>
                   controller: _controller,
                   focusNode: _focusNode,
                   style: const TextStyle(color: Colors.white, fontSize: 15),
+                  textAlignVertical: TextAlignVertical.center,
                   cursorColor: AppColors.primary,
                   textInputAction: TextInputAction.search,
                   onChanged: (v) =>
@@ -152,7 +153,7 @@ class _SearchScreenState extends State<SearchScreen>
                   decoration: InputDecoration(
                     hintText: 'Tìm video, tài khoản...',
                     hintStyle: TextStyle(
-                      color: Colors.white.withOpacity(0.35),
+                      color: Colors.white.withValues(alpha: 0.35),
                       fontSize: 15,
                     ),
                     prefixIcon: const Icon(
@@ -171,6 +172,8 @@ class _SearchScreenState extends State<SearchScreen>
                           )
                         : null,
                     border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(vertical: 11),
                   ),
                 ),

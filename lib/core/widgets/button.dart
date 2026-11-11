@@ -1,7 +1,7 @@
 // import 'package:flutter/material.dart';
 // import 'package:shortly_app/core/constants/app_colors.dart';
 // // ─── Button Types ────────────────────────────────────────────
-// enum shortly_appButtonType {
+// enum SharecoButtonType {
 //   primary,    // gradient + glow + shimmer
 //   secondary,  // muted glass
 //   outline,    // gradient border
@@ -12,28 +12,28 @@
 // }
 //
 // // ─── Button Sizes ────────────────────────────────────────────
-// enum shortly_appButtonSize { small, medium, large }
+// enum SharecoButtonSize { small, medium, large }
 //
 // // ─── Main Widget ─────────────────────────────────────────────
-// class shortly_appButton extends StatefulWidget {
+// class SharecoButton extends StatefulWidget {
 //   final String? label;
 //   final Widget? icon;
 //   final VoidCallback? onPressed;
-//   final shortly_appButtonType type;
-//   final shortly_appButtonSize size;
+//   final SharecoButtonType type;
+//   final SharecoButtonSize size;
 //   final bool disabled;
 //   final bool loading;
 //   final bool fullWidth;
 //   final bool pill;
 //   final List<Color>? gradientColors;
 //
-//   const shortly_appButton({
+//   const SharecoButton({
 //     super.key,
 //     this.label,
 //     this.icon,
 //     required this.type,
 //     this.onPressed,
-//     this.size = shortly_appButtonSize.medium,
+//     this.size = SharecoButtonSize.medium,
 //     this.disabled = false,
 //     this.loading = false,
 //     this.fullWidth = false,
@@ -42,10 +42,10 @@
 //   });
 //
 //   @override
-//   State<shortly_appButton> createState() => _shortly_appButtonState();
+//   State<SharecoButton> createState() => _SharecoButtonState();
 // }
 //
-// class _shortly_appButtonState extends State<shortly_appButton>
+// class _SharecoButtonState extends State<SharecoButton>
 //     with SingleTickerProviderStateMixin {
 //   late AnimationController _shimmerController;
 //   bool _pressed = false;
@@ -57,7 +57,7 @@
 //       vsync: this,
 //       duration: const Duration(milliseconds: 1800),
 //     );
-//     if (widget.type == shortly_appButtonType.primary && !widget.disabled) {
+//     if (widget.type == SharecoButtonType.primary && !widget.disabled) {
 //       Future.delayed(const Duration(milliseconds: 800), () {
 //         if (mounted) _shimmerController.repeat(min: 0, max: 1);
 //       });
@@ -73,7 +73,7 @@
 //   // ── Size config ──────────────────────────────────────────
 //   _SizeConfig get _sizeConfig {
 //     switch (widget.size) {
-//       case shortly_appButtonSize.small:
+//       case SharecoButtonSize.small:
 //         return const _SizeConfig(
 //           fontSize: 12,
 //           hPad: 14,
@@ -81,7 +81,7 @@
 //           radius: 9,
 //           iconSize: 15,
 //         );
-//       case shortly_appButtonSize.large:
+//       case SharecoButtonSize.large:
 //         return const _SizeConfig(
 //           fontSize: 16,
 //           hPad: 28,
@@ -142,7 +142,7 @@
 //
 //   Widget _buildContent(_SizeConfig sc, bool isDark) {
 //     switch (widget.type) {
-//       case shortly_appButtonType.primary:
+//       case SharecoButtonType.primary:
 //         return _PrimaryButton(
 //           label: widget.label,
 //           icon: widget.icon,
@@ -154,7 +154,7 @@
 //           sc: sc,
 //         );
 //
-//       case shortly_appButtonType.secondary:
+//       case SharecoButtonType.secondary:
 //         return _SimpleButton(
 //           label: widget.label,
 //           icon: widget.icon,
@@ -170,7 +170,7 @@
 //           sc: sc,
 //         );
 //
-//       case shortly_appButtonType.outline:
+//       case SharecoButtonType.outline:
 //         return _OutlineGradientButton(
 //           label: widget.label,
 //           icon: widget.icon,
@@ -181,7 +181,7 @@
 //           isDark: isDark,
 //         );
 //
-//       case shortly_appButtonType.icon:
+//       case SharecoButtonType.icon:
 //         return _IconButtonCustom(
 //           icon: widget.icon!,
 //           size: sc.iconSize + 10,
@@ -189,7 +189,7 @@
 //           radius: _borderRadius,
 //         );
 //
-//       case shortly_appButtonType.social:
+//       case SharecoButtonType.social:
 //         return _SimpleButton(
 //           label: widget.label,
 //           icon: widget.icon,
@@ -202,7 +202,7 @@
 //           shadowColor: Colors.black.withAlpha(20),
 //         );
 //
-//       case shortly_appButtonType.danger:
+//       case SharecoButtonType.danger:
 //         return _SimpleButton(
 //           label: widget.label,
 //           icon: widget.icon,
@@ -215,7 +215,7 @@
 //           shadowColor: const Color(0xFFFF2D55).withAlpha(77),
 //         );
 //
-//       case shortly_appButtonType.text:
+//       case SharecoButtonType.text:
 //         return _TextButtonCustom(
 //           label: widget.label!,
 //           sc: sc,
@@ -588,16 +588,16 @@
 //
 // // ─── Demo App ────────────────────────────────────────────────
 // void main() {
-//   runApp(const shortly_appApp());
+//   runApp(const SharecoApp());
 // }
 //
-// class shortly_appApp extends StatelessWidget {
-//   const shortly_appApp({super.key});
+// class SharecoApp extends StatelessWidget {
+//   const SharecoApp({super.key});
 //
 //   @override
 //   Widget build(BuildContext context) {
 //     return MaterialApp(
-//       title: 'shortly_app Buttons',
+//       title: 'Shareco Buttons',
 //       debugShowCheckedModeBanner: false,
 //       theme: ThemeData(
 //         brightness: Brightness.light,
@@ -620,7 +620,7 @@
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
-//       appBar: AppBar(title: const Text('shortly_app Button System')),
+//       appBar: AppBar(title: const Text('Shareco Button System')),
 //       body: SingleChildScrollView(
 //         padding: const EdgeInsets.all(20),
 //         child: Column(
@@ -629,21 +629,21 @@
 //             // ── Primary
 //             _Section(title: 'Primary — gradient + shimmer', children: [
 //               Row(children: [
-//                 shortly_appButton(
-//                   type: shortly_appButtonType.primary,
+//                 SharecoButton(
+//                   type: SharecoButtonType.primary,
 //                   label: 'Small',
-//                   size: shortly_appButtonSize.small,
+//                   size: SharecoButtonSize.small,
 //                   onPressed: () {},
 //                 ),
 //                 const SizedBox(width: 12),
-//                 shortly_appButton(
-//                   type: shortly_appButtonType.primary,
+//                 SharecoButton(
+//                   type: SharecoButtonType.primary,
 //                   label: 'Đăng nhập',
 //                   onPressed: () {},
 //                 ),
 //                 const SizedBox(width: 12),
-//                 shortly_appButton(
-//                   type: shortly_appButtonType.primary,
+//                 SharecoButton(
+//                   type: SharecoButtonType.primary,
 //                   label: 'Khám phá ✦',
 //                   pill: true,
 //                   onPressed: () {},
@@ -651,32 +651,32 @@
 //               ]),
 //               const SizedBox(height: 12),
 //               Row(children: [
-//                 shortly_appButton(
-//                   type: shortly_appButtonType.primary,
+//                 SharecoButton(
+//                   type: SharecoButtonType.primary,
 //                   label: 'Large',
-//                   size: shortly_appButtonSize.large,
+//                   size: SharecoButtonSize.large,
 //                   onPressed: () {},
 //                 ),
 //                 const SizedBox(width: 12),
-//                 shortly_appButton(
-//                   type: shortly_appButtonType.primary,
+//                 SharecoButton(
+//                   type: SharecoButtonType.primary,
 //                   label: 'Đang tải',
 //                   loading: true,
 //                   onPressed: () {},
 //                 ),
 //                 const SizedBox(width: 12),
-//                 shortly_appButton(
-//                   type: shortly_appButtonType.primary,
+//                 SharecoButton(
+//                   type: SharecoButtonType.primary,
 //                   label: 'Disabled',
 //                   disabled: true,
 //                   onPressed: () {},
 //                 ),
 //               ]),
 //               const SizedBox(height: 12),
-//               shortly_appButton(
-//                 type: shortly_appButtonType.primary,
+//               SharecoButton(
+//                 type: SharecoButtonType.primary,
 //                 label: 'Đăng nhập ngay',
-//                 size: shortly_appButtonSize.large,
+//                 size: SharecoButtonSize.large,
 //                 fullWidth: true,
 //                 icon: const Icon(Icons.login_rounded),
 //                 onPressed: () {},
@@ -686,21 +686,21 @@
 //             // ── Secondary
 //             _Section(title: 'Secondary', children: [
 //               Row(children: [
-//                 shortly_appButton(
-//                   type: shortly_appButtonType.secondary,
+//                 SharecoButton(
+//                   type: SharecoButtonType.secondary,
 //                   label: 'Hủy',
 //                   onPressed: () {},
 //                 ),
 //                 const SizedBox(width: 12),
-//                 shortly_appButton(
-//                   type: shortly_appButtonType.secondary,
+//                 SharecoButton(
+//                   type: SharecoButtonType.secondary,
 //                   label: 'Xem thêm →',
 //                   pill: true,
 //                   onPressed: () {},
 //                 ),
 //                 const SizedBox(width: 12),
-//                 shortly_appButton(
-//                   type: shortly_appButtonType.secondary,
+//                 SharecoButton(
+//                   type: SharecoButtonType.secondary,
 //                   label: 'Disabled',
 //                   disabled: true,
 //                   onPressed: () {},
@@ -711,14 +711,14 @@
 //             // ── Outline Gradient
 //             _Section(title: 'Outline gradient', children: [
 //               Row(children: [
-//                 shortly_appButton(
-//                   type: shortly_appButtonType.outline,
+//                 SharecoButton(
+//                   type: SharecoButtonType.outline,
 //                   label: 'Tìm hiểu thêm',
 //                   onPressed: () {},
 //                 ),
 //                 const SizedBox(width: 12),
-//                 shortly_appButton(
-//                   type: shortly_appButtonType.outline,
+//                 SharecoButton(
+//                   type: SharecoButtonType.outline,
 //                   label: 'Chia sẻ',
 //                   pill: true,
 //                   icon: const Icon(Icons.share_rounded),
@@ -730,26 +730,26 @@
 //             // ── Icon
 //             _Section(title: 'Icon', children: [
 //               Row(children: [
-//                 shortly_appButton(
-//                   type: shortly_appButtonType.icon,
+//                 SharecoButton(
+//                   type: SharecoButtonType.icon,
 //                   icon: const Icon(Icons.favorite_rounded),
 //                   onPressed: () {},
 //                 ),
 //                 const SizedBox(width: 12),
-//                 shortly_appButton(
-//                   type: shortly_appButtonType.icon,
+//                 SharecoButton(
+//                   type: SharecoButtonType.icon,
 //                   icon: const Icon(Icons.share_rounded),
 //                   onPressed: () {},
 //                 ),
 //                 const SizedBox(width: 12),
-//                 shortly_appButton(
-//                   type: shortly_appButtonType.icon,
+//                 SharecoButton(
+//                   type: SharecoButtonType.icon,
 //                   icon: const Icon(Icons.bookmark_rounded),
 //                   onPressed: () {},
 //                 ),
 //                 const SizedBox(width: 12),
-//                 shortly_appButton(
-//                   type: shortly_appButtonType.icon,
+//                 SharecoButton(
+//                   type: SharecoButtonType.icon,
 //                   icon: const Icon(Icons.star_rounded),
 //                   disabled: true,
 //                   onPressed: () {},
@@ -759,16 +759,16 @@
 //
 //             // ── Social
 //             _Section(title: 'Social', children: [
-//               shortly_appButton(
-//                 type: shortly_appButtonType.social,
+//               SharecoButton(
+//                 type: SharecoButtonType.social,
 //                 label: 'Tiếp tục với Google',
 //                 icon: const Icon(Icons.g_mobiledata_rounded, color: Color(0xFF4285F4), size: 22),
 //                 fullWidth: true,
 //                 onPressed: () {},
 //               ),
 //               const SizedBox(height: 10),
-//               shortly_appButton(
-//                 type: shortly_appButtonType.social,
+//               SharecoButton(
+//                 type: SharecoButtonType.social,
 //                 label: 'Tiếp tục với Facebook',
 //                 icon: const Icon(Icons.facebook_rounded, color: Color(0xFF1877F2)),
 //                 fullWidth: true,
@@ -779,8 +779,8 @@
 //             // ── Danger
 //             _Section(title: 'Danger', children: [
 //               Row(children: [
-//                 shortly_appButton(
-//                   type: shortly_appButtonType.danger,
+//                 SharecoButton(
+//                   type: SharecoButtonType.danger,
 //                   label: 'Xóa tài khoản',
 //                   icon: const Icon(Icons.delete_outline_rounded),
 //                   onPressed: () {},
@@ -887,32 +887,61 @@ class AppButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final bg = backgroundColor ?? AppColors.primary;
     final fg = textColor ?? Colors.white;
+    final useBrandGradient = backgroundColor == null && !isOutlined;
+
+    if (isOutlined) {
+      return SizedBox(
+        width: width ?? double.infinity,
+        height: 52,
+        child: OutlinedButton(
+          onPressed: isLoading ? null : onPressed,
+          style: OutlinedButton.styleFrom(
+            backgroundColor: AppColors.surfaceCard.withValues(alpha: 0.6),
+            side: BorderSide(
+              color: backgroundColor ?? AppColors.borderHighlight,
+              width: 1.4,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+            ),
+          ),
+          child: _child(textColor ?? Colors.white),
+        ),
+      );
+    }
 
     return SizedBox(
       width: width ?? double.infinity,
       height: 52,
-      child: isOutlined
-          ? OutlinedButton(
-        onPressed: isLoading ? null : onPressed,
-        style: OutlinedButton.styleFrom(
-          side: BorderSide(color: bg, width: 1.5),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.radiusLg),
-          ),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: useBrandGradient ? AppColors.primaryGradient : null,
+          color: useBrandGradient ? null : bg,
+          borderRadius: BorderRadius.circular(14),
+          boxShadow: onPressed == null
+              ? const []
+              : [
+                  BoxShadow(
+                    color: bg.withValues(alpha: 0.28),
+                    blurRadius: 14,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
         ),
-        child: _child(bg),
-      )
-          : ElevatedButton(
-        onPressed: isLoading ? null : onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: bg,
-          foregroundColor: fg,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.radiusLg),
+        child: ElevatedButton(
+          onPressed: isLoading ? null : onPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.transparent,
+            disabledBackgroundColor: Colors.transparent,
+            shadowColor: Colors.transparent,
+            foregroundColor: fg,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+            ),
           ),
+          child: _child(fg),
         ),
-        child: _child(fg),
       ),
     );
   }

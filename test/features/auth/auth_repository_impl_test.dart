@@ -5,8 +5,8 @@ import 'package:mocktail/mocktail.dart';
 import 'package:shortly_app/core/errors/exception.dart';
 import 'package:shortly_app/core/errors/failure.dart';
 import 'package:shortly_app/features/auth/data/datasources/auth_remote_datasources.dart';
-import 'package:shortly_app/features/auth/data/model/auth_session_model.dart';
-import 'package:shortly_app/features/auth/data/repositories/auth_repositories_impl.dart';
+import 'package:shortly_app/features/auth/data/models/auth_session_model.dart';
+import 'package:shortly_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:shortly_app/features/auth/domain/entities/auth_session.dart';
 
 class MockAuthRemoteDataSource extends Mock implements AuthRemoteDataSource {}

@@ -1,9 +1,23 @@
+
+// core/layout/main_scaffold.dart
+//
+// MainScaffold dùng StatefulShellRoute của GoRouter.
+// Mỗi tab giữ navigator riêng → giữ nguyên state khi chuyển tab.
+//
+// StatefulShellRoute.indexedStack phân phối:
+//   index 0 → /feed      (FeedScreen)
+//   index 1 → /discover
+//   index 2 → /create
+//   index 3 → /chat
+//   index 4 → /profile
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import '../../routes/app_router.dart';
+import 'package:shortly_app/routes/app_router.dart';
 import '../constants/app_colors.dart';
 import 'navbar.dart';
+import '../helpers/require_auth.dart';
 
 class MainScaffold extends StatelessWidget {
   /// Shell state do GoRouter cung cấp — quản lý tab navigator
@@ -26,8 +40,17 @@ class MainScaffold extends StatelessWidget {
   };
 
   void _onTabTap(BuildContext context, int navIndex) {
+    if (navIndex == 2) {
+      context.requireAuth(() => context.push(Routes.create));
+      return;
+    }
 
     final branchIndex = _navToBranch[navIndex]!;
+
+    if ((navIndex == 3 || navIndex == 4) && !context.isAuthenticated) {
+      context.requireAuth(() => navigationShell.goBranch(branchIndex));
+      return;
+    }
 
     navigationShell.goBranch(
       branchIndex,

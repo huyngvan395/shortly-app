@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
+import 'package:shortly_app/core/errors/failure.dart';
+
 import '../repositories/auth_repository.dart';
 
 class ExchangeCodeUseCase {

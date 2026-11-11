@@ -4,14 +4,18 @@ import 'package:shortly_app/features/ecommerce/admin/presentation/screen/admin_s
 import 'package:shortly_app/features/ecommerce/admin/presentation/screen/admin_products_screen.dart';
 import 'package:shortly_app/features/ecommerce/admin/presentation/screen/admin_product_form_screen.dart';
 import 'package:shortly_app/features/ecommerce/admin/presentation/screen/admin_orders_screen.dart';
+import 'package:shortly_app/features/ecommerce/admin/presentation/screen/admin_videos_screen.dart';
+import 'package:shortly_app/features/ecommerce/admin/presentation/screen/admin_users_screen.dart';
 
 class AdminRouter {
   static const String login = '/login';
   static const String shops = '/shops';
+  static const String users = '/users';
   static const String products = '/products';
   static const String productCreate = '/products/new';
   static const String productEdit = '/products/:id/edit';
   static const String orders = '/orders';
+  static const String videos = '/videos';
 
   static final GoRouter router = GoRouter(
     initialLocation: login,
@@ -44,6 +48,12 @@ class AdminRouter {
         ),
       ),
       GoRoute(
+        path: users,
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: AdminUsersScreen(),
+        ),
+      ),
+      GoRoute(
         path: products,
         pageBuilder: (context, state) => const NoTransitionPage(
           child: AdminProductsScreen(),
@@ -68,6 +78,12 @@ class AdminRouter {
         path: orders,
         pageBuilder: (context, state) => const NoTransitionPage(
           child: AdminOrdersScreen(),
+        ),
+      ),
+      GoRoute(
+        path: videos,
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: AdminVideosScreen(),
         ),
       ),
     ],
