@@ -264,4 +264,95 @@ void main() {
       );
     });
   });
+
+  group('confirmOrderDelivered', () {
+    const orderId = 'order-001';
+
+    const completedOrderModel = EcommerceOrderModel(
+      id: 'order-001',
+      buyerId: 'user-001',
+      shopId: 'shop-001',
+      orderCode: 'ORD-001',
+      status: 'completed',
+      subtotalAmount: 100000,
+      discountAmount: 0,
+      shippingAmount: 15000,
+      totalAmount: 115000,
+      currency: 'VND',
+      addressSnapshot: {},
+    );
+
+    test('returns completed order when confirmation succeeds', () async {
+      when(
+        () => remoteDataSource.confirmOrderDelivered(orderId),
+      ).thenAnswer((_) async => completedOrderModel);
+
+      final result = await repository.confirmOrderDelivered(orderId);
+
+      expect(result.isRight(), isTrue);
+
+      result.fold((_) => fail('Expected completed order'), (order) {
+        expect(order.id, orderId);
+        expect(order.status, 'completed');
+        expect(order.orderCode, 'ORD-001');
+      });
+
+      verify(() => remoteDataSource.confirmOrderDelivered(orderId)).called(1);
+    });
+
+    test('returns AuthFailure when AuthException occurs', () async {
+      when(
+        () => remoteDataSource.confirmOrderDelivered(orderId),
+      ).thenAnswer((_) => Future.error(const AuthException('Please sign in')));
+
+      final result = await repository.confirmOrderDelivered(orderId);
+
+      expect(result.isLeft(), isTrue);
+      result.fold((failure) {
+        expect(failure, isA<AuthFailure>());
+        expect(failure.message, 'Please sign in');
+      }, (_) => fail('Expected AuthFailure'));
+    });
+
+    test('returns NotFoundFailure when NotFoundException occurs', () async {
+      when(() => remoteDataSource.confirmOrderDelivered(orderId)).thenAnswer(
+        (_) => Future.error(const NotFoundException('Order not found')),
+      );
+
+      final result = await repository.confirmOrderDelivered(orderId);
+
+      expect(result.isLeft(), isTrue);
+      result.fold((failure) {
+        expect(failure, isA<NotFoundFailure>());
+        expect(failure.message, 'Order not found');
+      }, (_) => fail('Expected NotFoundFailure'));
+    });
+
+    test('returns ServerFailure when ServerException occurs', () async {
+      when(
+        () => remoteDataSource.confirmOrderDelivered(orderId),
+      ).thenAnswer((_) => Future.error(const ServerException('Server error')));
+
+      final result = await repository.confirmOrderDelivered(orderId);
+
+      expect(result.isLeft(), isTrue);
+      result.fold((failure) {
+        expect(failure, isA<ServerFailure>());
+        expect(failure.message, 'Server error');
+      }, (_) => fail('Expected ServerFailure'));
+    });
+
+    test('returns UnknownFailure when unexpected exception occurs', () async {
+      when(
+        () => remoteDataSource.confirmOrderDelivered(orderId),
+      ).thenAnswer((_) => Future.error(Exception('Unexpected error')));
+
+      final result = await repository.confirmOrderDelivered(orderId);
+
+      expect(result.isLeft(), isTrue);
+      result.fold((failure) {
+        expect(failure, isA<UnknownFailure>());
+      }, (_) => fail('Expected UnknownFailure'));
+    });
+  });
 }
