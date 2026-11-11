@@ -1,0 +1,48 @@
+2026-11-11 | huyngvan395 | 2e2774f | docs(readme): update project documentation and release APK download links
+2026-11-11 | huyngvan395 | 25ee798 | feat(app): complete Sprint 6:[EPIC-11] - Finalize Shoppertainment features, Agora RTC livestream & Seller Center
+2026-11-09 | Nguyễn Văn Huy | 249d673 | Merge pull request #54 from huyngvan395/feature/release-build
+2026-11-08 | HaiDylan | 730a5ca | chore(release): complete Sprint 6:[EPIC-11] - Build Release APK & iOS Deployment
+2026-11-08 | HoangTPMAFK | 4c4beb1 | Merge pull request #53 from huyngvan395/feature/performance
+2026-11-08 | HoangTPMAFK | d2788c4 | Merge pull request #52 from huyngvan395/feature/testing
+2026-11-08 | HoangTPMAFK | 47a83e4 | perf(app): complete Sprint 6:[EPIC-11] - Performance Optimization & Memory Leak Checks
+2026-11-08 | HaiDylan | 3567b7a | test(core): complete Sprint 6 - EPIC-11 Unit Tests for Core BLoCs & Repositories
+2026-11-08 | HoangTPMAFK | 34ddbcd | Merge pull request #51 from huyngvan395/feature/database-patches
+2026-11-08 | HoangTPMAFK | 9826b02 | feat(security): complete Sprint 6:[EPIC-11] - Audit Database Policies & Apply SQL Patches
+2026-11-07 | Nguyễn Văn Huy | 9b5df70 | Merge pull request #50 from huyngvan395/feature/review
+2026-11-07 | Nguyễn Văn Huy | b774097 | Merge branch 'master' into feature/review
+2026-11-07 | Nguyễn Văn Huy | c2ddda4 | Merge pull request #48 from huyngvan395/feature/notification
+2026-11-07 | Nguyễn Văn Huy | 1ffc26d | Merge pull request #49 from huyngvan395/feature/admin-shops
+2026-11-07 | Nguyễn Văn Huy | f3dabdb | Merge pull request #47 from huyngvan395/feature/admin-products
+2026-11-07 | Nguyễn Văn Huy | cdc2e38 | Merge pull request #46 from huyngvan395/feature/admin-auth
+2026-11-07 | Nguyễn Văn Huy | 4bae5b0 | Merge pull request #38 from huyngvan395/feature/order-detail
+2026-11-07 | Nguyễn Văn Huy | 77e6dca | Merge pull request #37 from huyngvan395/feature/order-list
+2026-11-07 | HoangTPMAFK | eca82a7 | feat(review): complete Sprint 5:[EPIC-08] - Product Review & Rating System
+2026-11-07 | HoangTPMAFK | 0da6b1a | feat(admin): complete Sprint 5:[EPIC-09] - Admin Shop Approval & Badge Management
+2026-11-07 | HaiDylan | 5e9635c | feat(notification): complete Sprint 5:[EPIC-10] - In-App Notification Center
+2026-11-07 | HaiDylan | ecdb71c | feat(admin): complete Sprint 5:[EPIC-09] - Admin Product Form (Create/Edit) & Inventory Management
+2026-11-06 | HaiDylan | 8728565 | feat(admin): complete Sprint 5:[EPIC-09] - Admin Login & Role-based Guard Navigation
+2026-11-06 | HoangTPMAFK | fbc26af | feat(order): complete Sprint 4:[EPIC-07] - Order Detail Screen & Order Cancellation Action
+2026-11-06 | HaiDylan | a7dd23a | feat(order): complete Sprint 4:[EPIC-07] - Create Order Database Transaction & User Order List
+2026-11-06 | Nguyễn Văn Huy | 1f7f42f | Merge pull request #33 from huyngvan395/feature/payment
+2026-11-06 | HaiDylan | f581ac3 | feat(checkout): complete Sprint 4:[EPIC-06] - Checkout Screen with Shipping & Price Calculation
+2026-11-06 | Nguyễn Văn Huy | 8b07761 | Merge pull request #31 from huyngvan395/feature/cart
+2026-11-06 | HoangTPMAFK | e281843 | feat(cart): complete Sprint 3:[EPIC-06] - Local & Remote Cart BLoC Implementation
+2026-11-06 | HoangTPMAFK | aac2dc4 | feat(cart): complete Sprint 3:[EPIC-06] - Local & Remote Cart BLoC Implementation
+2026-11-06 | Nguyễn Văn Huy | 6d34c8a | Merge pull request #30 from huyngvan395/feature/address
+2026-11-06 | HaiDylan | bb49f19 | feat(address): complete Sprint 3:[EPIC-06] - Address Management Screen (List, Add, Edit)
+2026-11-06 | Nguyễn Văn Huy | ba7d95f | Merge pull request #29 from huyngvan395/feature/shop
+2026-11-06 | HoangTPMAFK | f909259 | feat(shop): complete Sprint 3:[EPIC-05] - Seller Registration Flow & Shop Profile View
+2026-11-02 | Nguyễn Văn Huy | 84372d8 | Merge pull request #24 from huyngvan395/feature/product
+2026-10-31 | NgoQuangChung | 59288b1 | feat(product): complete EPIC-05 - Product List & Detailed Product View Screen
+2026-10-31 | Nguyễn Văn Huy | affcc9b | Merge pull request #23 from huyngvan395/feature/chat
+2026-10-23 | NgoQuangChung | b3a2276 | feat(chat): complete Sprint 2:[EPIC-04] - Realtime Chat Messaging with Supabase Streams
+2026-10-20 | Nguyễn Văn Huy | 636365d | Merge pull request #22 from huyngvan395/feature/create-video
+2026-10-20 | huyngvan395 | cee7a6e | feature(create-video) complete Sprint 2:[EPIC-03] Build Short Video Creator & Video Player Widget #11
+2026-10-14 | Nguyễn Văn Huy | 74a4e72 | Merge pull request #17 from huyngvan395/feature/feed
+2026-10-14 | huyngvan395 | 6b82b66 | feature(feed) complete Sprint 2: [EPIC-03] Implement Feed Screen with Infinite Scroll & Search #10
+2026-10-13 | NgoQuangChung | f468a2d | fix: clean up auth and profile issues
+2026-10-09 | Nguyễn Văn Huy | 29d3477 | Merge pull request #16 from huyngvan395/feature/profile
+2026-10-08 | NgoQuangChung | e0a5538 | feat(profile): complete Sprint 1 :#9 - Profile Screen & Cloudinary Avatar Upload
+2026-10-05 | Nguyễn Văn Huy | 492a5f6 | Merge pull request #15 from huyngvan395/feature/auth
+2026-10-05 | NgoQuangChung | 5326934 | feat(auth): complete Sprint 1: #7 - Auth Remote DataSource & Login/Register Screens
+2026-10-04 | huyngvan395 | 6080b9b | config initial project, getIt, goRouter for instance and router of project
