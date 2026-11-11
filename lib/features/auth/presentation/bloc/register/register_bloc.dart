@@ -1,10 +1,9 @@
 // features/auth/presentation/bloc/register/register_bloc.dart
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shortly_app/features/auth/presentation/bloc/register/register_event.dart';
-import 'package:shortly_app/features/auth/presentation/bloc/register/register_state.dart';
 import '../../../domain/usecases/register_usecase.dart';
-
+import 'register_event.dart';
+import 'register_state.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final RegisterUseCase registerUseCase;

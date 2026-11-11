@@ -4,8 +4,6 @@ import 'package:shortly_app/core/notifier/auth_notifier.dart';
 import 'package:shortly_app/di/injector.dart';
 import 'package:shortly_app/features/auth/domain/usecases/exchange_code_usecase.dart';
 
-import '../../../../core/services/supabase/index.dart';
-
 class AuthCallbackScreen extends StatefulWidget {
   final Uri uri;
 

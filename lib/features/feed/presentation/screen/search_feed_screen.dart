@@ -1,54 +1,11 @@
 // features/feed/presentation/screen/search_feed_screen.dart
 
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shortly_app/features/video/domain/entities/video_entity.dart';
-import '../../../../core/constants/app_colors.dart';
-import '../../../../core/utils/storage_image.dart';
+import '../../../../core/utils/video_controller_cache.dart';
+import '../../../video/domain/entities/video_entity.dart';
 import '../widgets/video_item.dart';
-import 'package:video_player/video_player.dart';
-
-class _VideoCache {
-  final Map<String, VideoPlayerController> _cache = {};
-  final Map<String, Future<VideoPlayerController>> _pending = {};
-  static const _max = 5;
-
-  Future<VideoPlayerController> getOrCreate(String path) async {
-    final url = StorageImage.videoUrl(path);
-    if (_cache.containsKey(url)) return _cache[url]!;
-    if (_pending.containsKey(url)) return _pending[url]!;
-    final future = _create(url);
-    _pending[url] = future;
-    return future;
-  }
-
-  Future<VideoPlayerController> _create(String url) async {
-    if (_cache.length >= _max) {
-      final old = _cache.keys.first;
-      await _cache[old]?.dispose();
-      _cache.remove(old);
-    }
-    final ctrl = VideoPlayerController.networkUrl(
-      Uri.parse(url),
-      videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
-    );
-    await ctrl.initialize();
-    ctrl.setLooping(true);
-    _cache[url] = ctrl;
-    _pending.remove(url);
-    return ctrl;
-  }
-
-  void pauseAll() {
-    for (final c in _cache.values) c.pause();
-  }
-
-  Future<void> disposeAll() async {
-    for (final c in _cache.values) await c.dispose();
-    _cache.clear();
-    _pending.clear();
-  }
-}
 
 class SearchFeedScreen extends StatefulWidget {
   final List<VideoEntity> videos;
@@ -65,19 +22,23 @@ class SearchFeedScreen extends StatefulWidget {
 }
 
 class _SearchFeedScreenState extends State<SearchFeedScreen> {
-  final _cache = _VideoCache();
+  final _cache = VideoControllerCache(maxControllers: 3);
   late final PageController _pageCtrl;
   int _activePage = 0;
+  Timer? _preloadDebounce;
 
   @override
   void initState() {
     super.initState();
-    _activePage = widget.initialIndex;
-    _pageCtrl = PageController(initialPage: widget.initialIndex);
+    VideoControllerCache.pauseAllGlobal(except: _cache);
+    final count = widget.videos.length;
+    _activePage = count > 0 ? widget.initialIndex.clamp(0, count - 1) : 0;
+    _pageCtrl = PageController(initialPage: _activePage);
   }
 
   @override
   void dispose() {
+    _preloadDebounce?.cancel();
     _pageCtrl.dispose();
     _cache.disposeAll();
     super.dispose();
@@ -86,14 +47,14 @@ class _SearchFeedScreenState extends State<SearchFeedScreen> {
   void _onPageChanged(int page) {
     _cache.pauseAll();
     setState(() => _activePage = page);
-    _preloadAt(page + 1);
-    _preloadAt(page + 2);
-  }
-
-  void _preloadAt(int idx) {
-    final videos = widget.videos;
-    if (idx < 0 || idx >= videos.length) return;
-    _cache.getOrCreate(videos[idx].videoPath);
+    _preloadDebounce?.cancel();
+    _preloadDebounce = Timer(const Duration(milliseconds: 180), () {
+      if (!mounted) return;
+      final next = page + 1;
+      if (next >= 0 && next < widget.videos.length) {
+        _cache.preload(widget.videos[next].videoPath);
+      }
+    });
   }
 
   @override
@@ -112,10 +73,11 @@ class _SearchFeedScreenState extends State<SearchFeedScreen> {
             itemBuilder: (_, i) {
               final video = videos[i];
               return VideoItem(
-                key: ValueKey(video.id),
+                key: ValueKey('search_${video.id}'),
                 video: video,
+                cache: _cache,
                 isActive: i == _activePage,
-                controllerFuture: _cache.getOrCreate(video.videoPath),
+                shouldPrepare: (i - _activePage).abs() <= 1,
               );
             },
           ),
@@ -146,8 +108,11 @@ class _BackButton extends StatelessWidget {
           color: Colors.black54,
           shape: BoxShape.circle,
         ),
-        child: const Icon(Icons.arrow_back_ios_new_rounded,
-            color: Colors.white, size: 18),
+        child: const Icon(
+          Icons.arrow_back_ios_new_rounded,
+          color: Colors.white,
+          size: 18,
+        ),
       ),
     );
   }

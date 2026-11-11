@@ -6,13 +6,10 @@ import 'package:dartz/dartz.dart';
 import 'package:shortly_app/core/services/cloudinary/cloudinary_service.dart';
 import '../../../../core/errors/exception.dart';
 import '../../../../core/errors/failure.dart';
-import '../../../../core/services/supabase/index.dart';
-import '../../../../shared/data/models/profile_stub_model.dart';
 import '../../../../shared/domain/entities/base_entity.dart';
 import '../../domain/entities/chat_entities.dart';
 import '../../domain/repositories/chat_repository.dart';
 import '../datasources/chat_remote_datasource.dart';
-import '../models/chat_models.dart';
 
 class ChatRepositoryImpl implements ChatRepository {
   final ChatRemoteDataSource remote;
@@ -39,6 +36,27 @@ class ChatRepositoryImpl implements ChatRepository {
       String otherUserId) async {
     try {
       return Right(await remote.getOrCreateConversation(otherUserId));
+    } catch (e) {
+      return _handle(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, ConversationEntity>> getOrCreateShopConversation({
+    required String shopId,
+    required String ownerId,
+    String? shopName,
+    String? shopLogo,
+    bool? isShopVerified,
+  }) async {
+    try {
+      return Right(await remote.getOrCreateShopConversation(
+        shopId: shopId,
+        ownerId: ownerId,
+        shopName: shopName,
+        shopLogo: shopLogo,
+        isShopVerified: isShopVerified,
+      ));
     } catch (e) {
       return _handle(e);
     }

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shortly_app/core/constants/app_colors.dart';
 
-import '../constants/app_colors.dart';
-
 class TextLogo extends StatelessWidget {
   const TextLogo({super.key});
 
