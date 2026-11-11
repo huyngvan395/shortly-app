@@ -48,3 +48,23 @@ jobs:
 
       - name: Run unit tests
         run: flutter test
+
+      - name: Run Flutter Analyze
+        id: analyze
+        continue-on-error: true
+        run: flutter analyze --no-pub
+
+      - name: Report Flutter Analyze result
+        if: always()
+        env:
+          ANALYZE_OUTCOME: ${{ steps.analyze.outcome }}
+        run: |
+          echo "## Flutter Analyze" >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$ANALYZE_OUTCOME" = "failure" ]; then
+            echo "⚠️ Analysis issues were found." >> "$GITHUB_STEP_SUMMARY"
+            echo "This check is informational and does not block CI." >> "$GITHUB_STEP_SUMMARY"
+            echo "::warning title=Flutter Analyze::Issues found. See the analyzer logs."
+          else
+            echo "✅ No analysis issues found." >> "$GITHUB_STEP_SUMMARY"
+          fi
