@@ -289,7 +289,6 @@ Future<void> setupInjector() async {
   sl.registerLazySingleton<ChatRemoteDataSource>(
     () => ChatRemoteDataSourceImpl(presenceService: sl()),
   );
-  // Chat
   sl.registerLazySingleton<ChatRepository>(
     () => ChatRepositoryImpl(
       remote: sl(),
@@ -326,13 +325,4 @@ Future<void> setupInjector() async {
       uploadMedia: sl(),
     ),
   );
-
-  // Review
-  sl.registerLazySingleton<ReviewRepository>(
-    () => ReviewRepositoryImpl(remoteDataSource: sl()),
-  );
-  sl.registerLazySingleton(() => GetProductReviewsUseCase(repository: sl()));
-  sl.registerLazySingleton(() => SubmitReviewUseCase(sl()));
-  sl.registerFactory(() => ReviewBloc(submitReviewUseCase: sl()));
-
 }
