@@ -302,6 +302,7 @@ class AppRouter {
           return OrderDetailScreen(orderId: id);
         },
       ),
+      GoRoute(
         path: Routes.searchFeed,
         builder: (context, _) {
           return BlocProvider(
