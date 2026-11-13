@@ -335,13 +335,4 @@ Future<void> setupInjector() async {
   sl.registerLazySingleton(() => SubmitReviewUseCase(sl()));
   sl.registerFactory(() => ReviewBloc(submitReviewUseCase: sl()));
 
-  // Order detail
-  sl.registerLazySingleton(() => GetOrderDetailUseCase(sl()));
-  sl.registerLazySingleton(() => CancelOrderUseCase(sl()));
-  sl.registerFactory(
-    () => OrderDetailBloc(
-      getOrderDetailUseCase: sl(),
-      cancelOrderUseCase: sl(),
-    ),
-  );
 }
