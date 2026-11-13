@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white" alt="Dart Badge"/>
   <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase Badge"/>
   <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="Postgres Badge"/>
-  <img src="https://img.shields.io/badge/Release-v1.0.0-success?style=for-the-badge&logo=android" alt="Release Badge"/>
+  <img src="https://img.shields.io/badge/Release-v1.0.2-success?style=for-the-badge&logo=android" alt="Release Badge"/>
 </p>
 
 ---
@@ -15,13 +15,13 @@
 Phiên bản Release APK chính thức đã được xuất bản và sẵn sàng để tải xuống và cài đặt trực tiếp trên các thiết bị Android:
 
 <p align="center">
-  <a href="https://github.com/huyngvan395/shortly-app/releases/download/v1.0.0/app-release.apk">
-    <img src="https://img.shields.io/badge/Bấm_Để_Tải_Xuống_APK_Release_(v1.0.1)-2ea44f?style=for-the-badge&logo=android&logoColor=white" alt="Tải APK Release" height="45"/>
+  <a href="https://github.com/huyngvan395/shortly-app/releases/download/v1.0.2/app-release.apk">
+    <img src="https://img.shields.io/badge/Bấm_Để_Tải_Xuống_APK_Release_(v1.0.2)-2ea44f?style=for-the-badge&logo=android&logoColor=white" alt="Tải APK Release" height="45"/>
   </a>
 </p>
 
-* ⬇️ **Link tải trực tiếp file APK:** [Tải app-release.apk (v1.0.1)](https://github.com/huyngvan395/shortly-app/releases/download/v1.0.0/app-release.apk)
-* 🔗 **Trang GitHub Releases:** [Shortly App Releases v1.0.1](https://github.com/huyngvan395/shortly-app/releases)
+* ⬇️ **Link tải trực tiếp file APK:** [Tải app-release.apk (v1.0.2)](https://github.com/huyngvan395/shortly-app/releases/download/v1.0.2/app-release.apk)
+* 🔗 **Trang GitHub Releases:** [Shortly App Releases v1.0.2](https://github.com/huyngvan395/shortly-app/releases)
 * 📦 **Tên tệp biên dịch:** `app-release.apk`
 * ⚖️ **Dung lượng:** `249.9 MB` (đã bao gồm đầy đủ native engines cho Agora RTC, Video Player và Camera)
 * 📂 **Đường dẫn cục bộ sau khi build:**
