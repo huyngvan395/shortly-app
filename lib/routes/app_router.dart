@@ -266,43 +266,6 @@ class AppRouter {
         },
       ),
       GoRoute(
-        path: Routes.profile,
-        builder: (_, _) => const SizedBox.shrink(),
-      ),
-      GoRoute(
-        path: Routes.profileDetail,
-        builder: (_, state) {
-          final uid = state.pathParameters['id'] ?? '';
-          return ProfileScreen(userId: uid);
-        },
-      ),
-      GoRoute(
-        path: Routes.shopProfile,
-        builder: (_, state) {
-          final id = state.pathParameters['id'] ?? '';
-          return ShopProfileScreen(shopId: id);
-        },
-      ),
-      GoRoute(
-        path: Routes.registerSeller,
-        builder: (_, _) => const SellerRegistrationScreen(),
-      ),
-      GoRoute(
-        path: Routes.reviewForm,
-        builder: (_, state) {
-          final item = state.extra;
-          if (item == null) return const SizedBox.shrink();
-          return ReviewFormScreen(orderItem: item as dynamic);
-        },
-      ),
-      GoRoute(
-        path: Routes.orderDetail,
-        builder: (_, state) {
-          final id = state.pathParameters['id'] ?? '';
-          return OrderDetailScreen(orderId: id);
-        },
-      ),
-      GoRoute(
         path: Routes.searchFeed,
         builder: (context, _) {
           return BlocProvider(
